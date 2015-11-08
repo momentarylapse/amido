@@ -32,15 +32,16 @@
                 android:text="Clear"
                 android:id="@+id/button_clear"
                 android:layout_gravity="center_horizontal"
-                android:onClick="onClearButton" />
+                android:onClick="onClearButton"
+                style="?android:attr/borderlessButtonStyle" />
 
             <Button
-                style="?android:attr/buttonStyleSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Ok"
                 android:id="@+id/button_ok"
-                android:layout_gravity="center_horizontal" />
+                android:layout_gravity="center_horizontal"
+                style="?android:attr/borderlessButtonStyle" />
         </LinearLayout>
 
     </LinearLayout>

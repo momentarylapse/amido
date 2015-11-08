@@ -17,16 +17,26 @@
 package com.example.michi.amido;
 
 import android.content.Context;
+import android.content.res.XmlResourceParser;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
+import android.util.JsonReader;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+
+import java.io.IOException;
 import java.util.ArrayList;
 
 
@@ -57,16 +67,73 @@ public class TouchDisplayView extends View {
         public void clear() {
             points.clear();
         }
+    }
 
+    static class Character {
+        public int id;
+        public String type;
+        public String glyph;
+        public String pronunciation;
+        public String english;
+        public String german;
+        public int num_strokes;
+        public String strokes;
+        public JSONArray strokes_digest;
     }
 
     private ArrayList<Stroke> strokes = new ArrayList<>();
     private Stroke cur_stroke = new Stroke();
+    private ArrayList<Character> characters = new ArrayList<>();
 
     public TouchDisplayView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         initialisePaint();
+
+        Log.i("xxx", "load...");
+        Character c = new Character();
+        XmlResourceParser _xml = context.getResources().getXml(R.xml.characters);
+        try
+        {
+            //Check for end of document
+            int eventType = _xml.getEventType();
+            while (eventType != XmlPullParser.END_DOCUMENT) {
+                //Search for record tags
+                if ((eventType == XmlPullParser.START_TAG) && (_xml.getName().equals("character"))){
+                    c.id = _xml.getAttributeIntValue(null, "id", 0);
+                    c.glyph = _xml.getAttributeValue(null, "glyph");
+                    c.pronunciation = _xml.getAttributeValue(null, "pronunciation");
+                    c.english = _xml.getAttributeValue(null, "english");
+                    c.german = _xml.getAttributeValue(null, "german");
+                    c.strokes = _xml.getAttributeValue(null, "strokes");
+                }
+                if (eventType == XmlPullParser.TEXT) {
+                    c.strokes_digest = new JSONArray(_xml.getText());
+                }
+                if ((eventType == XmlPullParser.END_TAG) && (_xml.getName().equals("character"))){
+                    characters.add(c);
+                    c = new Character();
+                }
+                eventType = _xml.next();
+            }
+        }
+        //Catch errors
+        catch (XmlPullParserException e)
+        {
+            Log.e("xxx", e.getMessage(), e);
+        }
+        catch (IOException e)
+        {
+            Log.e("xxx", e.getMessage(), e);
+
+        } catch (JSONException e) {
+            Log.e("xxx", e.getMessage(), e);
+        } finally
+        {
+            //Close the xml file
+            _xml.close();
+        }
+        Log.i("xxx", "fertig");
     }
 
     // BEGIN_INCLUDE(onTouchEvent)
@@ -281,6 +348,20 @@ public class TouchDisplayView extends View {
     public void clear() {
         strokes.clear();
         this.invalidate();
+    }
+
+
+    @Override
+    protected void onMeasure(final int widthMeasureSpec, final int heightMeasureSpec)
+    {
+        final int width = getDefaultSize(getSuggestedMinimumWidth(),widthMeasureSpec);
+        setMeasuredDimension(width, width);
+    }
+
+    @Override
+    protected void onSizeChanged(final int w, final int h, final int oldw, final int oldh)
+    {
+        super.onSizeChanged(w, w, oldw, oldh);
     }
 
 }

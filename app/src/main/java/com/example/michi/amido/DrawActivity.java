@@ -44,7 +44,6 @@ public class DrawActivity extends AppCompatActivity {
     }
 
     public void onClearButton(View b) {
-        Log.i("xx", "clear");
         TouchDisplayView v = (TouchDisplayView)findViewById(R.id.view);
         v.clear();
     }
