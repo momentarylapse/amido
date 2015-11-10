@@ -41,7 +41,8 @@
                 android:text="Ok"
                 android:id="@+id/button_ok"
                 android:layout_gravity="center_horizontal"
-                style="?android:attr/borderlessButtonStyle" />
+                style="?android:attr/borderlessButtonStyle"
+                android:onClick="onOkButton" />
         </LinearLayout>
 
     </LinearLayout>

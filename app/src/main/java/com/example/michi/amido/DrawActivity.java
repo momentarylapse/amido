@@ -47,4 +47,9 @@ public class DrawActivity extends AppCompatActivity {
         TouchDisplayView v = (TouchDisplayView)findViewById(R.id.view);
         v.clear();
     }
+
+    public void onOkButton(View b) {
+        TouchDisplayView v = (TouchDisplayView)findViewById(R.id.view);
+        v.lookup();
+    }
 }
