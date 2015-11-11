@@ -323,6 +323,10 @@ public class TouchDisplayView extends View {
     public void lookup() {
         CharacterDatabase.Character digest = CharacterDatabase.digest(strokes);
         CharacterDatabase.Answer al = db.find(digest);
+        Log.i("xx", "" + al.size());
+        for (CharacterDatabase.AnswerItem i : al)
+            Log.i("xx", i.c.glyph + " - " + i.c.english + " - " + i.score);
+        Toast.makeText(this.getContext(), al.best.c.glyph + " - " + al.best.c.english + " - " + al.best.score, Toast.LENGTH_SHORT).show();
         //strokes.clear();
         //this.invalidate();
     }
