@@ -28,6 +28,8 @@ import android.util.JsonReader;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -38,6 +40,7 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import static java.lang.Math.max;
 import static java.lang.Math.min;
@@ -323,12 +326,14 @@ public class TouchDisplayView extends View {
     public void lookup() {
         CharacterDatabase.Character digest = CharacterDatabase.digest(strokes);
         CharacterDatabase.Answer al = db.find(digest);
-        Log.i("xx", "" + al.size());
+        //Toast.makeText(this.getContext(), al.best.c.glyph + " - " + al.best.c.english + " - " + al.best.score, Toast.LENGTH_SHORT).show();
+
+        ListView lv = (ListView)getRootView().findViewById(R.id.answer_list);
+        ArrayAdapter<String> aa = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1);
+        lv.setAdapter(aa);
+        Collections.reverse(al);
         for (CharacterDatabase.AnswerItem i : al)
-            Log.i("xx", i.c.glyph + " - " + i.c.english + " - " + i.score);
-        Toast.makeText(this.getContext(), al.best.c.glyph + " - " + al.best.c.english + " - " + al.best.score, Toast.LENGTH_SHORT).show();
-        //strokes.clear();
-        //this.invalidate();
+            aa.add(i.c.glyph + " - " + i.c.english + " - " + (int)(i.score * 100) + "%");
     }
 
 
