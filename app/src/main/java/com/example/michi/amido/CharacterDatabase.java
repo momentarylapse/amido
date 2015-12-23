@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.XmlResourceParser;
 import android.opengl.Matrix;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -12,7 +13,6 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import static java.lang.Math.abs;
@@ -155,6 +155,25 @@ public class CharacterDatabase {
         public float mx, my, dx, dy, length;
         public float fmx, fmy, fdx, fdy, fl;
         public float[] w = new float[COUNT];
+
+        public Stroke undigest()
+        {
+            Stroke s = new Stroke();
+            Point p = new Point(0, 0);
+            s.add(p);
+            for (int i=0; i<COUNT; i++){
+                float ww = (w[i] - 0.5f) * (float)Math.PI * 2.0f;
+                Point p2 = new Point(p.x + (float)Math.sin(ww), p.y + (float)Math.cos(ww));
+                s.add(p2);
+                p = p2;
+            }
+            BoundingBox bb = s.getBoundingBox();
+            for (Point pp : s.points){
+                pp.x = ((pp.x - bb.mx()) / bb.dx() * dx + mx) * 0.9f + 0.05f;
+                pp.y = ((pp.y - bb.my()) / bb.dy() * dy + my) * 0.9f + 0.05f;
+            }
+            return s;
+        }
     }
 
     static class Character {
@@ -258,19 +277,37 @@ public class CharacterDatabase {
     private ArrayList<Character> characters = new ArrayList<>();
     private Character dummy_no_character;
 
-    public CharacterDatabase(Context context) {
+    Context context;
+    boolean loaded = false;
+
+    static CharacterDatabase instance = null;
+    public static CharacterDatabase getInstance(Context context)
+    {
+        if (instance == null)
+            instance = new CharacterDatabase(context);
+        return instance;
+    }
+
+    private CharacterDatabase(Context context) {
         dummy_no_character = new Character();
         dummy_no_character.glyph = "?";
         dummy_no_character.english = "?";
         dummy_no_character.pronunciation = "?";
         dummy_no_character.german = "?";
 
-        load(context);
+        //load(context);
+        this.context = context;
     }
 
+    public void makeUsable()
+    {
+        if (!loaded)
+            load();
+    }
 
-    public void load(Context context) {
+    public void load() {
 
+        Toast.makeText(context, "loading character database...", Toast.LENGTH_SHORT).show();
         Log.i("xxx", "load...");
         Character c = new Character();
         XmlResourceParser _xml = context.getResources().getXml(R.xml.characters);
@@ -313,9 +350,11 @@ public class CharacterDatabase {
             _xml.close();
         }
         Log.i("xxx", "fertig");
+        loaded = true;
     }
 
     public Answer find(Character digest) {
+        makeUsable();
         Answer al = new Answer(new AnswerItem(dummy_no_character, 0));
 
         for (Character c : characters) {
@@ -327,7 +366,38 @@ public class CharacterDatabase {
                 al.append(new AnswerItem(c, score));
         }
 
+        for (int i=0; i<al.size(); i++)
+            for (int j=i+1; j<al.size(); j++)
+                if (al.get(j).score > al.get(i).score){
+                    AnswerItem tt = al.get(j);
+                    al.set(j, al.get(i));
+                    al.set(i, tt);
+                }
+
         return al;
+    }
+
+    public Answer find(String query) {
+        makeUsable();
+        Answer al = new Answer(new AnswerItem(dummy_no_character, 0));
+        query = query.toLowerCase();
+
+        for (Character c : characters) {
+            if ((c.glyph == query) || (c.english.toLowerCase().contains(query)) || (c.german.toLowerCase().contains(query)) || (c.pronunciation.toLowerCase().contains(query)))
+                al.append(new AnswerItem(c, 1));
+        }
+
+        return al;
+    }
+
+    public Character get(int id)
+    {
+        makeUsable();
+        for (Character c : characters) {
+            if (c.id == id)
+                return c;
+        }
+        return dummy_no_character;
     }
 
     public static Character digest(ArrayList<Stroke> strokes) {
