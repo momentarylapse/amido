@@ -12,18 +12,16 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <SearchView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/searchView"
-            android:layout_marginLeft="61dp"
-            android:layout_marginStart="61dp" />
+            android:id="@+id/searchView" />
 
         <com.example.michi.amido.CharacterView
             android:layout_width="match_parent"
-            android:layout_height="354dp"
+            android:layout_height="wrap_content"
             android:id="@+id/view"
             android:layout_gravity="center_horizontal" />
 
@@ -54,7 +52,7 @@
 
         <ListView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="600dp"
             android:id="@+id/answer_list"
             android:layout_gravity="center_horizontal" />
 

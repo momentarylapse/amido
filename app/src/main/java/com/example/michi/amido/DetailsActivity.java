@@ -36,5 +36,11 @@ public class DetailsActivity extends AppCompatActivity {
         CharacterView v = (CharacterView)findViewById(R.id.view2);
         v.setDemo(c);
     }
+    @Override
+    protected void onDestroy() {
+        CharacterView v = (CharacterView)findViewById(R.id.view2);
+        v.close();
+        super.onDestroy();
+    }
 
 }

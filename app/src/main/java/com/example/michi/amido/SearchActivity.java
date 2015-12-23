@@ -17,6 +17,7 @@ public class SearchActivity extends AppCompatActivity {
 
     private CharacterDatabase db;
     private CharacterDatabase.Answer answer_list;
+    CharacterView characterView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,10 +50,10 @@ public class SearchActivity extends AppCompatActivity {
                                   });
 
         db = CharacterDatabase.getInstance(this);
+        characterView = (CharacterView)findViewById(R.id.view);
     }
 
-    public void showDetails(CharacterDatabase.Character c)
-    {
+    public void showDetails(CharacterDatabase.Character c) {
         Intent myIntent = new Intent(SearchActivity.this, DetailsActivity.class);
         myIntent.putExtra("id", c.id);
         startActivity(myIntent);
@@ -81,12 +82,10 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     public void onClearButton(View b) {
-        CharacterView v = (CharacterView)findViewById(R.id.view);
-        v.clear();
+        characterView.clear();
     }
 
-    public void setAnswers(CharacterDatabase.Answer al)
-    {
+    public void setAnswers(CharacterDatabase.Answer al) {
         answer_list = al;
 
         ListView lv = (ListView)findViewById(R.id.answer_list);
@@ -97,9 +96,6 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     public void onOkButton(View b) {
-        CharacterView v = (CharacterView)findViewById(R.id.view);
-
-        CharacterDatabase.Character digest = v.getDigest();
-        setAnswers(db.find(digest));
+        setAnswers(db.find(characterView.getDigest()));
     }
 }

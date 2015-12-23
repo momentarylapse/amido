@@ -2,7 +2,6 @@ package com.example.michi.amido;
 
 import android.content.Context;
 import android.content.res.XmlResourceParser;
-import android.opengl.Matrix;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -14,6 +13,8 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import static java.lang.Math.abs;
 import static java.lang.Math.max;
@@ -30,6 +31,19 @@ public class CharacterDatabase {
         public Point(float x, float y) {
             this.x = x;
             this.y = y;
+        }
+        public float distance(Point p) {
+            float dx = x - p.x;
+            float dy = y - p.y;
+            return (float)Math.sqrt(dx*dx + dy*dy);
+        }
+        public float direction(Point p) {
+            float dx = x - p.x;
+            float dy = y - p.y;
+            return (float)Math.atan2(dx, dy);
+        }
+        public Point interpolateTo(Point p, float t) {
+            return new Point((1-t)*x + t*p.x, (1-t)*y + t*p.y);
         }
         public String toString() {
             return "(" + x + " " + y + ")";
@@ -115,11 +129,9 @@ public class CharacterDatabase {
 
             // length and directions
             for (int i=0; i<N-1; i++){
-                float dx = s.points.get(i+1).x - s.points.get(i).x;
-                float dy = s.points.get(i+1).y - s.points.get(i).y;
-                dl[i] = (float)Math.sqrt(dx * dx + dy * dy);
+                w[i] = s.points.get(i+1).direction(s.points.get(i)) / ((float)Math.PI * 2.0f) + 0.5f;
+                dl[i] = s.points.get(i+1).distance(s.points.get(i));
                 sd.length += dl[i];
-                w[i] = (float)Math.atan2(dx, dy) / ((float)Math.PI * 2.0f) + 0.5f;
             }
             for (int i=0; i<N-1; i++)
                 dl[i] /= sd.length;
@@ -128,8 +140,8 @@ public class CharacterDatabase {
             for (int i=0; i<StrokeDigest.COUNT-1; i++){
                 float li = (float)i / (float)(StrokeDigest.COUNT-1);
                 float lj = 0;
-                for (int j=0; j<N-1; j++){
-                    if ((li >= lj) && (li <= lj + dl[j])){
+                for (int j=0; j<N-1; j++) {
+                    if ((li >= lj) && (li <= lj + dl[j])) {
                         sd.w[i] = w[j];
                         break;
                     }
@@ -147,6 +159,13 @@ public class CharacterDatabase {
 
             return sd;
         }
+
+        float getLength() {
+            float length = 0;
+            for (int i=0; i<points.size()-1; i++)
+                length += points.get(i+1).distance(points.get(i));
+            return length;
+        }
     }
 
 
@@ -156,19 +175,18 @@ public class CharacterDatabase {
         public float fmx, fmy, fdx, fdy, fl;
         public float[] w = new float[COUNT];
 
-        public Stroke undigest()
-        {
+        public Stroke undigest() {
             Stroke s = new Stroke();
             Point p = new Point(0, 0);
             s.add(p);
-            for (int i=0; i<COUNT; i++){
+            for (int i=0; i<COUNT; i++) {
                 float ww = (w[i] - 0.5f) * (float)Math.PI * 2.0f;
                 Point p2 = new Point(p.x + (float)Math.sin(ww), p.y + (float)Math.cos(ww));
                 s.add(p2);
                 p = p2;
             }
             BoundingBox bb = s.getBoundingBox();
-            for (Point pp : s.points){
+            for (Point pp : s.points) {
                 pp.x = ((pp.x - bb.mx()) / bb.dx() * dx + mx) * 0.9f + 0.05f;
                 pp.y = ((pp.y - bb.my()) / bb.dy() * dy + my) * 0.9f + 0.05f;
             }
@@ -216,7 +234,7 @@ public class CharacterDatabase {
                 return 1000000;
             float d = 0;
             int i = 0;
-            for (StrokeDigest as : strokes_digest){
+            for (StrokeDigest as : strokes_digest) {
                 StrokeDigest bs = b.strokes_digest.get(i);
                 d += as.fl * pow(as.length - bs.length, 2);
                 d += as.fmx * pow(as.mx - bs.mx, 2);
@@ -224,7 +242,7 @@ public class CharacterDatabase {
                 d += as.fdx * pow(as.dx - bs.dx, 2);
                 d += as.fdy * pow(as.dy - bs.dy, 2);
                 float dw = 0;
-                for (int j=0; j<StrokeDigest.COUNT; j++){
+                for (int j=0; j<StrokeDigest.COUNT; j++) {
                     float wdist = abs(as.w[j] - bs.w[j]);
                     if (wdist < 0.5)
                         dw += wdist;
@@ -266,7 +284,7 @@ public class CharacterDatabase {
                 best = it;
 
             for (int i=0; i<size(); i++)
-                if (it.score < get(i).score) {
+                if (it.score > get(i).score) {
                     add(i, it);
                     return;
                 }
@@ -278,13 +296,21 @@ public class CharacterDatabase {
     private Character dummy_no_character;
 
     Context context;
-    boolean loaded = false;
+
+    public enum State {
+        NOT_LOADED,
+        LOADING,
+        LOADED
+    }
+
+    State state = State.NOT_LOADED;
 
     static CharacterDatabase instance = null;
-    public static CharacterDatabase getInstance(Context context)
-    {
-        if (instance == null)
+    public static CharacterDatabase getInstance(Context context) {
+        if (instance == null) {
             instance = new CharacterDatabase(context);
+            instance.loadBackground();
+        }
         return instance;
     }
 
@@ -299,25 +325,38 @@ public class CharacterDatabase {
         this.context = context;
     }
 
-    public void makeUsable()
-    {
-        if (!loaded)
+    public void loadBackground() {
+        Timer t = new Timer();
+        TimerTask tt = new TimerTask() {
+            @Override
+            public void run() {
+                CharacterDatabase.this.load();
+            }
+        };
+        t.schedule(tt, 0);
+
+    }
+
+    public void makeUsable() {
+        if (state == State.NOT_LOADED)
             load();
+        while (state != State.LOADED) {}
     }
 
     public void load() {
 
-        Toast.makeText(context, "loading character database...", Toast.LENGTH_SHORT).show();
+        state = State.LOADING;
+
+        //Toast.makeText(context, "loading character database...", Toast.LENGTH_SHORT).show();
         Log.i("xxx", "load...");
         Character c = new Character();
         XmlResourceParser _xml = context.getResources().getXml(R.xml.characters);
-        try
-        {
+        try {
             //Check for end of document
             int eventType = _xml.getEventType();
             while (eventType != XmlPullParser.END_DOCUMENT) {
                 //Search for record tags
-                if ((eventType == XmlPullParser.START_TAG) && (_xml.getName().equals("character"))){
+                if ((eventType == XmlPullParser.START_TAG) && (_xml.getName().equals("character"))) {
                     c.id = _xml.getAttributeIntValue(null, "id", 0);
                     c.glyph = _xml.getAttributeValue(null, "glyph");
                     c.pronunciation = _xml.getAttributeValue(null, "pronunciation");
@@ -329,28 +368,22 @@ public class CharacterDatabase {
                 if (eventType == XmlPullParser.TEXT) {
                     c.setDigest(_xml.getText());
                 }
-                if ((eventType == XmlPullParser.END_TAG) && (_xml.getName().equals("character"))){
+                if ((eventType == XmlPullParser.END_TAG) && (_xml.getName().equals("character"))) {
                     characters.add(c);
                     c = new Character();
                 }
                 eventType = _xml.next();
             }
-        }
-        //Catch errors
-        catch (XmlPullParserException e)
-        {
+        } catch (XmlPullParserException e) {
             Log.e("xxx", e.getMessage(), e);
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             Log.e("xxx", e.getMessage(), e);
-        } finally
-        {
+        } finally {
             //Close the xml file
             _xml.close();
         }
         Log.i("xxx", "fertig");
-        loaded = true;
+        state = State.LOADED;
     }
 
     public Answer find(Character digest) {
@@ -365,14 +398,6 @@ public class CharacterDatabase {
             if (score > 0)
                 al.append(new AnswerItem(c, score));
         }
-
-        for (int i=0; i<al.size(); i++)
-            for (int j=i+1; j<al.size(); j++)
-                if (al.get(j).score > al.get(i).score){
-                    AnswerItem tt = al.get(j);
-                    al.set(j, al.get(i));
-                    al.set(i, tt);
-                }
 
         return al;
     }
@@ -390,8 +415,7 @@ public class CharacterDatabase {
         return al;
     }
 
-    public Character get(int id)
-    {
+    public Character get(int id) {
         makeUsable();
         for (Character c : characters) {
             if (c.id == id)

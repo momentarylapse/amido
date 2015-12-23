@@ -21,12 +21,17 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.Point;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import static java.lang.Math.min;
 
 
 /**
@@ -42,6 +47,9 @@ public class CharacterView extends View {
     private CharacterDatabase.Character demo = null;
 
     boolean editable = true;
+    boolean animating = false;
+    Timer animationTimer = null;
+    float animationTime;
 
     public CharacterView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -49,22 +57,44 @@ public class CharacterView extends View {
         initialisePaint();
     }
 
-    public void setDemo(CharacterDatabase.Character c)
-    {
+    public void close() {
+        if (animationTimer != null)
+            animationTimer.cancel();
+        animationTimer = null;
+        animating = false;
+    }
+
+    public void setDemo(CharacterDatabase.Character c) {
         demo = c;
         editable = false;
 
         clear();
 
-        for (CharacterDatabase.StrokeDigest s : demo.strokes_digest){
+        for (CharacterDatabase.StrokeDigest s : demo.strokes_digest) {
             strokes.add(s.undigest());
         }
 
-        this.postInvalidate();
+        postInvalidate();
+
+
+        animationTime = 0;
+        if (!animating) {
+            animating = true;
+            animationTimer = new Timer();
+            TimerTask tt = new TimerTask() {
+                @Override
+                public void run() {
+                    CharacterView.this.animationTime += 0.02f;
+                    if (CharacterView.this.animationTime > CharacterView.this.strokes.size() + 2)
+                        CharacterView.this.animationTime = 0;
+                    CharacterView.this.postInvalidate();
+                }
+            };
+            animationTimer.schedule(tt, 0, 20);
+        }
     }
 
-    public CharacterDatabase.Point event2point(MotionEvent event, int index)
-    {
+    public CharacterDatabase.Point event2point(MotionEvent event, int index) {
         return new CharacterDatabase.Point(event.getX(index) / (float)getWidth(), event.getY(index) / (float)getHeight());
     }
 
@@ -122,28 +152,15 @@ public class CharacterView extends View {
 
     // END_INCLUDE(onTouchEvent)
 
-    @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-
-        canvas.drawColor(BACKGROUND_ACTIVE);
-        canvas.drawRect(mBorderWidth/2, mBorderWidth/2, getWidth() - mBorderWidth/2, getHeight()
-                - mBorderWidth/2, mBorderPaint);
-
-        for (CharacterDatabase.Stroke s : strokes)
-            drawStroke(canvas, s, strokePaint);
-        drawStroke(canvas, cur_stroke, curStrokePaint);
-
-        canvas.drawText("" + strokes.size() + " strokes", 10f, 30f, mTextPaint);
-    }
-
 
     private Paint mTextPaint = new Paint();
     private Paint strokePaint = new Paint();
+    private Paint strokePaintBack = new Paint();
     private Paint curStrokePaint = new Paint();
 
     private static final float STROKE_DP = 10f;
     private static final int STROKE_COLOR = 0xFF707070;
+    private static final int STROKE_COLOR_BACK = 0xFFa0a0a0;
     private static final int CUR_STROKE_COLOR = 0xFFFF7070;
 
     private static final int BACKGROUND_ACTIVE = Color.WHITE;
@@ -177,10 +194,40 @@ public class CharacterView extends View {
         strokePaint.setColor(STROKE_COLOR);
         strokePaint.setStyle(Paint.Style.STROKE);
 
+        strokePaintBack.setStrokeWidth(STROKE_DP * density * 0.7f);
+        strokePaintBack.setColor(STROKE_COLOR_BACK);
+        strokePaintBack.setStyle(Paint.Style.STROKE);
+
         curStrokePaint.setStrokeWidth(STROKE_DP * density);
         curStrokePaint.setColor(CUR_STROKE_COLOR);
         curStrokePaint.setStyle(Paint.Style.STROKE);
 
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+
+        canvas.drawColor(BACKGROUND_ACTIVE);
+        canvas.drawRect(mBorderWidth/2, mBorderWidth/2, getWidth() - mBorderWidth/2, getHeight() - mBorderWidth/2, mBorderPaint);
+
+        if (animating) {
+            int cur = (int)animationTime;
+            float t = min((animationTime - cur) * 1.5f, 1);
+            for (int i=cur; i<strokes.size(); i++)
+                drawStroke(canvas, strokes.get(i), strokePaintBack);
+            for (int i=0; i<min(cur, strokes.size()); i++)
+                drawStroke(canvas, strokes.get(i), strokePaint);
+            if (cur < strokes.size())
+                drawStrokePartial(canvas, strokes.get(cur), t, curStrokePaint);
+
+        } else {
+            for (CharacterDatabase.Stroke s : strokes)
+                drawStroke(canvas, s, strokePaint);
+            drawStroke(canvas, cur_stroke, curStrokePaint);
+        }
+
+        canvas.drawText("" + strokes.size() + " strokes", 10f, 30f, mTextPaint);
     }
 
     protected void drawStroke(Canvas canvas, CharacterDatabase.Stroke s, Paint paint) {
@@ -194,28 +241,51 @@ public class CharacterView extends View {
         canvas.drawPath(path, paint);
     }
 
+    protected void drawStrokePartial(Canvas canvas, CharacterDatabase.Stroke s, float t, Paint paint) {
+
+        Path path = new Path();
+        if (s.points.size() > 0)
+            path.moveTo(s.points.get(0).x * getWidth(), s.points.get(0).y * getHeight());
+        float strokeLength = s.getLength();
+        float pathLength = 0;
+        CharacterDatabase.Point last = s.points.get(0);
+        for (CharacterDatabase.Point p : s.points) {
+            float dl = p.distance(last);
+            if (pathLength > t * strokeLength) {
+                CharacterDatabase.Point pp = last.interpolateTo(p, (t * strokeLength - pathLength) / dl);
+                path.lineTo(pp.x * getWidth(), pp.y * getHeight());
+                break;
+            }
+            pathLength += dl;
+            path.lineTo(p.x * getWidth(), p.y * getHeight());
+            last = p;
+        }
+
+        canvas.drawPath(path, paint);
+    }
+
     public void clear() {
         strokes.clear();
         this.invalidate();
     }
 
-    public CharacterDatabase.Character getDigest()
-    {
+    public CharacterDatabase.Character getDigest() {
         return CharacterDatabase.digest(strokes);
     }
 
 
     @Override
-    protected void onMeasure(final int widthMeasureSpec, final int heightMeasureSpec)
-    {
-        final int width = getDefaultSize(getSuggestedMinimumWidth(),widthMeasureSpec);
-        setMeasuredDimension(width, width);
+    protected void onMeasure(final int widthMeasureSpec, final int heightMeasureSpec) {
+        final int width = getDefaultSize(getSuggestedMinimumWidth(), widthMeasureSpec);
+        final int height = getDefaultSize(getSuggestedMinimumHeight(), heightMeasureSpec);
+        final int size = min(width, height);
+        setMeasuredDimension(size, size);
     }
 
     @Override
-    protected void onSizeChanged(final int w, final int h, final int oldw, final int oldh)
-    {
-        super.onSizeChanged(w, w, oldw, oldh);
+    protected void onSizeChanged(final int w, final int h, final int oldw, final int oldh) {
+        int size = min(w, h);
+        super.onSizeChanged(size, size, oldw, oldh);
     }
 
 }
