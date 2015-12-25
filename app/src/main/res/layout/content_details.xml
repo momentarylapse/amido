@@ -32,7 +32,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="Character"
+                    android:text="@string/details_character"
                     android:id="@+id/textView"
                     android:layout_column="0"
                     android:textStyle="bold" />
@@ -54,7 +54,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="Pronunciation"
+                    android:text="@string/details_pronunciation"
                     android:id="@+id/textView3"
                     android:layout_column="0"
                     android:textStyle="bold"
@@ -76,7 +76,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="English"
+                    android:text="@string/details_english"
                     android:id="@+id/textView5"
                     android:layout_column="0"
                     android:textStyle="bold" />
@@ -97,7 +97,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="German"
+                    android:text="@string/details_german"
                     android:id="@+id/textView7"
                     android:layout_column="0"
                     android:textStyle="bold" />

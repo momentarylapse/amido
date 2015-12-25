@@ -91,8 +91,10 @@ public class SearchActivity extends AppCompatActivity {
         ListView lv = (ListView)findViewById(R.id.answer_list);
         ArrayAdapter<String> aa = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
         lv.setAdapter(aa);
-        for (CharacterDatabase.AnswerItem i : al)
-            aa.add(i.c.glyph + " - " + i.c.english + " - " + (int)(i.score * 100) + "%");
+        for (CharacterDatabase.AnswerItem i : al){
+            String s = getResources().getString(R.string.search_answer_format);
+            aa.add(String.format(s, i.c.glyph, i.c.getSimpleEnglish(), i.c.getSimpleGerman(), (int)(i.score * 100)));
+        }
     }
 
     public void onOkButton(View b) {

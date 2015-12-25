@@ -21,7 +21,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.Point;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -209,7 +208,7 @@ public class CharacterView extends View {
         super.onDraw(canvas);
 
         canvas.drawColor(BACKGROUND_ACTIVE);
-        canvas.drawRect(mBorderWidth/2, mBorderWidth/2, getWidth() - mBorderWidth/2, getHeight() - mBorderWidth/2, mBorderPaint);
+        canvas.drawRect(mBorderWidth / 2, mBorderWidth / 2, getWidth() - mBorderWidth / 2, getHeight() - mBorderWidth / 2, mBorderPaint);
 
         if (animating) {
             int cur = (int)animationTime;
@@ -227,7 +226,8 @@ public class CharacterView extends View {
             drawStroke(canvas, cur_stroke, curStrokePaint);
         }
 
-        canvas.drawText("" + strokes.size() + " strokes", 10f, 30f, mTextPaint);
+        String s = String.format(getResources().getString(R.string.character_view_strokes_count), strokes.size());
+        canvas.drawText(s, 10f, 30f, mTextPaint);
     }
 
     protected void drawStroke(Canvas canvas, CharacterDatabase.Stroke s, Paint paint) {

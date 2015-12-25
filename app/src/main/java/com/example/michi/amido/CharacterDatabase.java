@@ -256,6 +256,18 @@ public class CharacterDatabase {
             return d / num_strokes * 1000;
         }
 
+        public String getSimpleEnglish() {
+            if (english.contains("|"))
+                return english.split("|")[0];
+            return english;
+
+        }
+        public String getSimpleGerman() {
+            if (german.contains("|"))
+                return german.split("\\|")[0];
+            return german;
+        }
+
 
         /*public BoundingBox getBoundingBox() {
             BoundingBox box = new BoundingBox();
@@ -382,7 +394,7 @@ public class CharacterDatabase {
             //Close the xml file
             _xml.close();
         }
-        Log.i("xxx", "fertig");
+        Log.i("xxx", "done");
         state = State.LOADED;
     }
 

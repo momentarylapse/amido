@@ -34,7 +34,7 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Clear"
+                android:text="@string/draw_clear"
                 android:id="@+id/button_clear"
                 android:layout_gravity="center_horizontal"
                 android:onClick="onClearButton"
@@ -43,7 +43,7 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Ok"
+                android:text="@string/draw_ok"
                 android:id="@+id/button_ok"
                 android:layout_gravity="center_horizontal"
                 style="?android:attr/borderlessButtonStyle"
@@ -52,7 +52,7 @@
 
         <ListView
             android:layout_width="match_parent"
-            android:layout_height="600dp"
+            android:layout_height="wrap_content"
             android:id="@+id/answer_list"
             android:layout_gravity="center_horizontal" />
 
