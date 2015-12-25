@@ -57,10 +57,10 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="2.8"
-     inkscape:cx="115.85602"
-     inkscape:cy="88.743615"
+     inkscape:cx="-10.572552"
+     inkscape:cy="103.02933"
      inkscape:document-units="px"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="layer2"
      showgrid="true"
      units="px"
      inkscape:window-width="1600"
@@ -81,10 +81,21 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="Ebene 2">
+    <path
+       style="opacity:1;fill:#eeeeee;fill-opacity:1;stroke:#a7a7a7;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 2.5,24.142857 c 48.070594,-10.049239 91.13213,-5.906149 133.57141,0 -12.48203,71.162769 -3.54853,108.360993 0,148.214263 -43.173904,8.99933 -87.542124,10.03655 -133.57141,0 4.2105866,-45.19417 6.1848299,-92.624679 0,-148.214263 z"
+       id="rect4157"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccc" />
+  </g>
   <g
      inkscape:label="Ebene 1"
      inkscape:groupmode="layer"
