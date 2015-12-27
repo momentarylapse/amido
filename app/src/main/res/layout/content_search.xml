@@ -14,42 +14,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <SearchView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/searchView" />
-
-        <com.example.michi.amido.CharacterView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/view"
-            android:layout_gravity="center_horizontal" />
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal">
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/draw_clear"
-                android:id="@+id/button_clear"
-                android:layout_gravity="center_horizontal"
-                android:onClick="onClearButton"
-                style="?android:attr/borderlessButtonStyle" />
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/draw_ok"
-                android:id="@+id/button_ok"
-                android:layout_gravity="center_horizontal"
-                style="?android:attr/borderlessButtonStyle"
-                android:onClick="onOkButton" />
-        </LinearLayout>
-
         <ListView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -11,5 +11,11 @@
     <string name="details_pronunciation">Aussprache</string>
     <string name="draw_clear">Löschen</string>
     <string name="draw_ok">Ok</string>
-    <string name="search_answer_format">%1$s - %3$s - %4$d%%</string>
+    <string name="search_answer_format">%1$s - %3$s </string>
+    <string name="action_draw">Malen</string>
+    <string name="action_learn">Lernen</string>
+    <string name="action_search">Suchen</string>
+    <string name="title_activity_draw">Malen</string>
+    <string name="title_activity_search">Suchen</string>
+    <string name="draw_answer_format">%1$s - %3$s - %4$d%%</string>
 </resources>

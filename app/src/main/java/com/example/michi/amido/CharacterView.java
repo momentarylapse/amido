@@ -24,12 +24,14 @@ import android.graphics.Path;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
 
 
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static java.lang.Math.abs;
 import static java.lang.Math.min;
 
 
@@ -152,7 +154,7 @@ public class CharacterView extends View {
     // END_INCLUDE(onTouchEvent)
 
 
-    private Paint mTextPaint = new Paint();
+    private Paint textPaint = new Paint();
     private Paint strokePaint = new Paint();
     private Paint strokePaintBack = new Paint();
     private Paint curStrokePaint = new Paint();
@@ -164,11 +166,11 @@ public class CharacterView extends View {
 
     private static final int BACKGROUND_ACTIVE = Color.WHITE;
 
-    // inactive border
-    private static final float INACTIVE_BORDER_DP = 3f;
-    private static final int INACTIVE_BORDER_COLOR = 0xFFb0b0b0;
-    private Paint mBorderPaint = new Paint();
-    private float mBorderWidth;
+    private static final float BORDER_DP = 2f;
+    private static final int BORDER_COLOR = 0xFFb0b0b0;
+    private Paint borderPaint = new Paint();
+    private float borderWidth;
+    private float fontSize;
 
     /**
      * Sets up the required {@link android.graphics.Paint} objects for the screen density of this
@@ -179,15 +181,14 @@ public class CharacterView extends View {
         // Calculate radiuses in px from dp based on screen density
         float density = getResources().getDisplayMetrics().density;
 
-        // Setup text paint for circle label
-        mTextPaint.setTextSize(27f);
-        mTextPaint.setColor(Color.BLACK);
+        fontSize = 15f * density;
+        textPaint.setTextSize(fontSize);
+        textPaint.setColor(Color.BLACK);
 
-        // Setup paint for inactive border
-        mBorderWidth = INACTIVE_BORDER_DP * density;
-        mBorderPaint.setStrokeWidth(mBorderWidth);
-        mBorderPaint.setColor(INACTIVE_BORDER_COLOR);
-        mBorderPaint.setStyle(Paint.Style.STROKE);
+        borderWidth = BORDER_DP * density;
+        borderPaint.setStrokeWidth(borderWidth);
+        borderPaint.setColor(BORDER_COLOR);
+        borderPaint.setStyle(Paint.Style.STROKE);
 
         strokePaint.setStrokeWidth(STROKE_DP * density);
         strokePaint.setColor(STROKE_COLOR);
@@ -208,7 +209,7 @@ public class CharacterView extends View {
         super.onDraw(canvas);
 
         canvas.drawColor(BACKGROUND_ACTIVE);
-        canvas.drawRect(mBorderWidth / 2, mBorderWidth / 2, getWidth() - mBorderWidth / 2, getHeight() - mBorderWidth / 2, mBorderPaint);
+        canvas.drawRect(borderWidth / 2, borderWidth / 2, getWidth() - borderWidth / 2, getHeight() - borderWidth / 2, borderPaint);
 
         if (animating) {
             int cur = (int)animationTime;
@@ -227,7 +228,7 @@ public class CharacterView extends View {
         }
 
         String s = String.format(getResources().getString(R.string.character_view_strokes_count), strokes.size());
-        canvas.drawText(s, 10f, 30f, mTextPaint);
+        canvas.drawText(s, 10f, fontSize, textPaint);
     }
 
     protected void drawStroke(Canvas canvas, CharacterDatabase.Stroke s, Paint paint) {
@@ -278,13 +279,16 @@ public class CharacterView extends View {
     protected void onMeasure(final int widthMeasureSpec, final int heightMeasureSpec) {
         final int width = getDefaultSize(getSuggestedMinimumWidth(), widthMeasureSpec);
         final int height = getDefaultSize(getSuggestedMinimumHeight(), heightMeasureSpec);
-        final int size = min(width, height);
+        int size = min(width, height);
+        if (this.getRootView().getHeight() > 0)
+            size = min(size, this.getRootView().getHeight() / 2);
         setMeasuredDimension(size, size);
     }
 
     @Override
     protected void onSizeChanged(final int w, final int h, final int oldw, final int oldh) {
         int size = min(w, h);
+        //size = min(size, this.getRootView().getHeight() / 2);
         super.onSizeChanged(size, size, oldw, oldh);
     }
 

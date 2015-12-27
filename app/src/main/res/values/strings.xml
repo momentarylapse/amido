@@ -4,7 +4,6 @@
     <string name="title_activity_details">Details</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="character_view_strokes_count">%d strokes</string>
     <string name="details_character">Character</string>
     <string name="details_pronunciation">Pronunciation</string>
@@ -12,5 +11,11 @@
     <string name="details_german">German</string>
     <string name="draw_clear">Clear</string>
     <string name="draw_ok">Ok</string>
-    <string name="search_answer_format">%1$s - %2$s - %4$d%%</string>
+    <string name="search_answer_format">%1$s - %2$s </string>
+    <string name="action_draw">Draw</string>
+    <string name="action_search">Search</string>
+    <string name="action_learn">Learn</string>
+    <string name="title_activity_draw">Draw</string>
+    <string name="title_activity_search">Search</string>
+    <string name="draw_answer_format">%1$s - %2$s - %4$d%%</string>
 </resources>

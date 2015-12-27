@@ -1,10 +1,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" tools:context=".SearchActivity">
+    <item android:id="@+id/action_draw" android:title="@string/action_draw"
+        android:orderInCategory="100" app:showAsAction="always" android:icon="@android:drawable/ic_menu_edit" />
     <item android:id="@+id/action_search" android:title="@string/action_search"
         android:orderInCategory="200" app:showAsAction="always" app:actionViewClass="android.widget.SearchView" android:icon="@android:drawable/ic_menu_search" />
-    <item android:id="@+id/action_learn" android:title="@string/action_learn"
-        android:orderInCategory="100" app:showAsAction="always" android:icon="@android:drawable/ic_menu_agenda" />
     <item android:id="@+id/action_settings" android:title="@string/action_settings"
         android:orderInCategory="100" app:showAsAction="never" />
 </menu>
