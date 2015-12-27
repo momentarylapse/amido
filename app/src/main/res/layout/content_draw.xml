@@ -30,22 +30,34 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal">
 
-            <Button
+            <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/draw_clear"
                 android:id="@+id/button_clear"
                 android:layout_gravity="center_horizontal"
                 android:onClick="onClearButton"
-                style="?android:attr/borderlessButtonStyle" />
+                style="?android:attr/borderlessButtonStyle"
+                android:src="@android:drawable/ic_menu_close_clear_cancel" />
 
-            <Button
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/draw_delete_stroke"
+                android:id="@+id/button_undo"
+                android:layout_gravity="center_horizontal"
+                android:onClick="onDeleteStrokeButton"
+                style="?android:attr/borderlessButtonStyle"
+                android:src="@android:drawable/ic_menu_revert" />
+
+            <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/draw_ok"
                 android:id="@+id/button_ok"
                 android:layout_gravity="center_horizontal"
                 style="?android:attr/borderlessButtonStyle"
+                android:src="@android:drawable/ic_menu_search"
                 android:onClick="onOkButton" />
         </LinearLayout>
 

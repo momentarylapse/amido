@@ -52,6 +52,8 @@ public class CharacterView extends View {
     Timer animationTimer = null;
     float animationTime;
 
+    boolean autoClear = false;
+
     public CharacterView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
@@ -111,6 +113,8 @@ public class CharacterView extends View {
             case MotionEvent.ACTION_DOWN: {
                 int id = event.getPointerId(0);
                 if (id == 0) {
+                    if (autoClear)
+                        clear();
                     cur_stroke.clear();
                     cur_stroke.add(event2point(event, 0));
                 }
@@ -229,6 +233,9 @@ public class CharacterView extends View {
 
         String s = String.format(getResources().getString(R.string.character_view_strokes_count), strokes.size());
         canvas.drawText(s, 10f, fontSize, textPaint);
+
+        if (autoClear)
+            canvas.drawText(getResources().getString(R.string.draw_auto_clear), 10f, getHeight() - 8, textPaint);
     }
 
     protected void drawStroke(Canvas canvas, CharacterDatabase.Stroke s, Paint paint) {
@@ -267,6 +274,19 @@ public class CharacterView extends View {
 
     public void clear() {
         strokes.clear();
+        autoClear = false;
+        this.invalidate();
+    }
+
+    public void deleteLastStroke() {
+        if (strokes.size() > 0)
+            strokes.remove(strokes.size() - 1);
+        autoClear = false;
+        this.invalidate();
+    }
+
+    public void setAutoClear() {
+        autoClear = true;
         this.invalidate();
     }
 

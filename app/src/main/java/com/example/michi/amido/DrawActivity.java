@@ -90,6 +90,10 @@ public class DrawActivity extends AppCompatActivity implements SearchView.OnQuer
         characterView.clear();
     }
 
+    public void onDeleteStrokeButton(View b) {
+        characterView.deleteLastStroke();
+    }
+
     public void setAnswers(CharacterDatabase.Answer al) {
         answer_list = al;
 
@@ -104,6 +108,7 @@ public class DrawActivity extends AppCompatActivity implements SearchView.OnQuer
 
     public void onOkButton(View b) {
         setAnswers(db.find(characterView.getDigest()));
+        characterView.setAutoClear();
     }
 
     @Override

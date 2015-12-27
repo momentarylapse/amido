@@ -18,4 +18,6 @@
     <string name="title_activity_draw">Draw</string>
     <string name="title_activity_search">Search</string>
     <string name="draw_answer_format">%1$s - %2$s - %4$d%%</string>
+    <string name="draw_delete_stroke">Delete stroke</string>
+    <string name="draw_auto_clear">will automatically clear</string>
 </resources>
