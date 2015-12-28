@@ -1,9 +1,10 @@
 package com.example.michi.amido;
 
+import android.app.DialogFragment;
+import android.app.Fragment;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -14,7 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
-import android.widget.Toast;
+
 
 public class DrawActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
@@ -34,6 +35,10 @@ public class DrawActivity extends AppCompatActivity implements SearchView.OnQuer
     private CharacterDatabase db;
     private CharacterDatabase.Answer answer_list;
     CharacterView characterView;
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +48,7 @@ public class DrawActivity extends AppCompatActivity implements SearchView.OnQuer
         setSupportActionBar(toolbar);
 
 
-        ListView lv = (ListView)findViewById(R.id.answer_list);
+        ListView lv = (ListView) findViewById(R.id.answer_list);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -52,13 +57,13 @@ public class DrawActivity extends AppCompatActivity implements SearchView.OnQuer
         });
 
         db = CharacterDatabase.getInstance(this);
-        characterView = (CharacterView)findViewById(R.id.view);
+        characterView = (CharacterView) findViewById(R.id.view);
     }
 
     public void showDetails(CharacterDatabase.Character c) {
-        Intent myIntent = new Intent(DrawActivity.this, DetailsActivity.class);
-        myIntent.putExtra("id", c.id);
-        startActivity(myIntent);
+        DialogFragment f = DetailsFragment.newInstance(c.id);
+        f.show(getFragmentManager(), "");
+
     }
 
     @Override
@@ -81,6 +86,10 @@ public class DrawActivity extends AppCompatActivity implements SearchView.OnQuer
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        } else if (id == R.id.action_learn) {
+            Intent myIntent = new Intent(DrawActivity.this, LearnActivity.class);
+            startActivity(myIntent);
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -97,12 +106,12 @@ public class DrawActivity extends AppCompatActivity implements SearchView.OnQuer
     public void setAnswers(CharacterDatabase.Answer al) {
         answer_list = al;
 
-        ListView lv = (ListView)findViewById(R.id.answer_list);
+        ListView lv = (ListView) findViewById(R.id.answer_list);
         ArrayAdapter<String> aa = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
         lv.setAdapter(aa);
-        for (CharacterDatabase.AnswerItem i : al){
+        for (CharacterDatabase.AnswerItem i : al) {
             String s = getResources().getString(R.string.draw_answer_format);
-            aa.add(String.format(s, i.c.glyph, i.c.getSimpleEnglish(), i.c.getSimpleGerman(), (int)(i.score * 100)));
+            aa.add(String.format(s, i.c.glyph, i.c.getSimpleEnglish(), i.c.getSimpleGerman(), (int) (i.score * 100)));
         }
     }
 

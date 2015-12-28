@@ -20,4 +20,9 @@
     <string name="draw_answer_format">%1$s - %2$s - %4$d%%</string>
     <string name="draw_delete_stroke">Delete stroke</string>
     <string name="draw_auto_clear">will automatically clear</string>
+    <string name="title_activity_learn">Learn</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="button_ok">Ok</string>
 </resources>

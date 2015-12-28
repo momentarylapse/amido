@@ -1,5 +1,6 @@
 package com.example.michi.amido;
 
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
@@ -25,6 +26,8 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
         setContentView(R.layout.activity_search);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         ListView lv = (ListView)findViewById(R.id.answer_list);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -42,9 +45,8 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
     }
 
     public void showDetails(CharacterDatabase.Character c) {
-        Intent myIntent = new Intent(SearchActivity.this, DetailsActivity.class);
-        myIntent.putExtra("id", c.id);
-        startActivity(myIntent);
+        DialogFragment f = DetailsFragment.newInstance(c.id);
+        f.show(getFragmentManager(), "");
     }
 
     @Override
