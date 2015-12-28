@@ -54,6 +54,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.michi.amido.LearnActivity" />
         </activity>
+        <activity
+            android:name=".LearnDoneActivity"
+            android:label="@string/title_activity_learn_done"
+            android:parentActivityName=".LearnActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.michi.amido.DrawActivity" />
+        </activity>
     </application>
 
 </manifest>

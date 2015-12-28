@@ -10,6 +10,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 public class LearnRangeSelectionActivity extends AppCompatActivity {
 
     final static int STEP = 20;
@@ -32,13 +34,11 @@ public class LearnRangeSelectionActivity extends AppCompatActivity {
 
                 if (type.equals("draw")) {
                     Intent myIntent = new Intent(LearnRangeSelectionActivity.this, LearnDrawActivity.class);
-                    myIntent.putExtra("first", position * STEP + 1);
-                    myIntent.putExtra("last", position * STEP + STEP);
+                    myIntent.putExtra("list", getList(position));
                     startActivity(myIntent);
                 } else {
                     /*Intent myIntent = new Intent(LearnRangeSelectionActivity.this, LearnShowActivity.class);
-                    myIntent.putExtra("first", position * STEP + 1);
-                    myIntent.putExtra("last", position * STEP + STEP);
+                    myIntent.putExtra("list", getList(position));
                     startActivity(myIntent);*/
                     Toast.makeText(LearnRangeSelectionActivity.this, "not implemented yet: " + type, Toast.LENGTH_SHORT).show();
                 }
@@ -50,6 +50,15 @@ public class LearnRangeSelectionActivity extends AppCompatActivity {
         for (int i=0; i<MAX; i+=STEP) {
             aa.add(String.format("%d-%d", i+1, i+STEP));
         }
+    }
+
+    public int[] getList(int position) {
+        int first = position * STEP + 1;
+        int last = position * STEP + STEP;
+        int list[] = new int[last - first + 1];
+        for (int i=first; i<=last; i++)
+            list[i-first] = i;
+        return list;
     }
 
 }

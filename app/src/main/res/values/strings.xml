@@ -31,8 +31,9 @@
     <string name="title_activity_learn_draw">Learn / Draw</string>
     <string name="pronunciation">Pronunciation</string>
     <string name="translation">Translation</string>
-    <string name="learn_draw_correct">correct - %d%%</string>
+    <string name="learn_draw_correct">correct - %1$s - %2$d%%</string>
     <string name="learn_draw_wrong">wrong - %s</string>
     <string name="learn_draw_status">%1$d of %2$d done</string>
     <string name="learn_done">Congratulations, you\'re done!</string>
+    <string name="title_activity_learn_done">Done</string>
 </resources>

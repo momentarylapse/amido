@@ -1,5 +1,6 @@
 package com.example.michi.amido;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -17,10 +18,9 @@ import java.util.Random;
 
 public class LearnDrawActivity extends AppCompatActivity {
 
-    private CharacterDatabase db;
     CharacterView characterView;
 
-    ArrayList<CharacterDatabase.Character> list = new ArrayList<>();
+    ArrayList<CharacterDatabase.Character> list;
     CharacterDatabase.Character curCharacter;
     int done;
 
@@ -32,17 +32,12 @@ public class LearnDrawActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        db = CharacterDatabase.getInstance(this);
         characterView = (CharacterView) findViewById(R.id.view);
 
-        int first = getIntent().getIntExtra("first", 0);
-        int last = getIntent().getIntExtra("last", 0);
+        CharacterDatabase db = CharacterDatabase.getInstance(this);
 
-        for (int i=first; i<=last; i++) {
-            CharacterDatabase.Character c = db.get(i);
-            if (c != null)
-                list.add(c);
-        }
+        int ids[] = getIntent().getIntArrayExtra("list");
+        list = db.get(ids);
         done = 0;
 
         chooseRandom();
@@ -61,8 +56,8 @@ public class LearnDrawActivity extends AppCompatActivity {
 
     public void chooseRandom() {
         if (list.size() == 0) {
-            Toast.makeText(this, getResources().getText(R.string.learn_done), Toast.LENGTH_SHORT).show();
-            this.onBackPressed();
+            Intent myIntent = new Intent(this, LearnDoneActivity.class);
+            startActivity(myIntent);
             return;
         }
         Random r = new Random();
@@ -80,7 +75,7 @@ public class LearnDrawActivity extends AppCompatActivity {
     public void onOkButton(View b) {
         float score = curCharacter.score(characterView.getDigest());
         if (score > 0) {
-            Toast.makeText(this, String.format(getResources().getString(R.string.learn_draw_correct), (int)(score * 100.0f)), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, String.format(getResources().getString(R.string.learn_draw_correct), curCharacter.glyph, (int)(score * 100.0f)), Toast.LENGTH_SHORT).show();
             list.remove(curCharacter);
             done ++;
 

@@ -438,6 +438,16 @@ public class CharacterDatabase {
         return dummy_no_character;
     }
 
+    public ArrayList<Character> get(int ids[]) {
+        ArrayList<Character> list = new ArrayList<>();
+        for (int i : ids) {
+            CharacterDatabase.Character c = get(i);
+            if (c != null)
+                list.add(c);
+        }
+        return list;
+    }
+
     public static Character digest(ArrayList<Stroke> strokes) {
         Character c = new Character();
         c.num_strokes = strokes.size();
