@@ -9,8 +9,9 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".DetailsFragment"
-    tools:showIn="@layout/fragment_details">
+    tools:context="com.example.michi.amido.LearnDrawActivity"
+    tools:showIn="@layout/activity_learn_draw">
+
 
     <LinearLayout
         android:orientation="vertical"
@@ -32,33 +33,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="@string/details_character"
-                    android:id="@+id/textView"
+                    android:text="@string/pronunciation"
+                    android:id="@+id/textView4"
                     android:layout_column="0"
                     android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="X"
-                    android:id="@+id/character"
-                    android:layout_column="1"
-                    android:textSize="80dp" />
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="@string/details_pronunciation"
-                    android:id="@+id/textView3"
-                    android:layout_column="0"
-                    android:textStyle="bold"
-                    android:layout_marginRight="20dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -76,7 +54,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="@string/details_english"
+                    android:text="@string/translation"
                     android:id="@+id/textView5"
                     android:layout_column="0"
                     android:textStyle="bold" />
@@ -85,44 +63,64 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="New Text"
-                    android:id="@+id/english"
-                    android:layout_column="1" />
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="@string/details_german"
-                    android:id="@+id/textView7"
-                    android:layout_column="0"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="New Text"
-                    android:id="@+id/german"
+                    android:id="@+id/translation"
                     android:layout_column="1" />
             </TableRow>
         </TableLayout>
 
         <com.example.michi.amido.CharacterView
             android:layout_width="match_parent"
-            android:layout_height="fill_parent"
-            android:id="@+id/view2"
-            android:layout_column="1" />
-
-        <!--Button
-            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="@string/button_ok"
-            style="?android:attr/borderlessButtonStyle"
-            android:id="@+id/button_ok" /-->
+            android:id="@+id/view"
+            android:layout_gravity="center_horizontal" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal">
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/draw_clear"
+                android:id="@+id/button_clear"
+                android:layout_gravity="center_horizontal"
+                android:onClick="onClearButton"
+                style="?android:attr/borderlessButtonStyle"
+                android:src="@android:drawable/ic_menu_close_clear_cancel" />
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/draw_delete_stroke"
+                android:id="@+id/button_undo"
+                android:layout_gravity="center_horizontal"
+                android:onClick="onDeleteStrokeButton"
+                style="?android:attr/borderlessButtonStyle"
+                android:src="@android:drawable/ic_menu_revert" />
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/draw_ok"
+                android:id="@+id/button_ok"
+                android:layout_gravity="center_horizontal"
+                style="?android:attr/borderlessButtonStyle"
+                android:src="@android:drawable/ic_menu_search"
+                android:onClick="onOkButton" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/pronunciation"
+            android:id="@+id/status"
+            android:layout_column="0"
+            android:textStyle="bold"
+            android:layout_marginRight="20dp" />
 
     </LinearLayout>
+
 </RelativeLayout>

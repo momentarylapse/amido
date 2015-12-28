@@ -25,4 +25,14 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="button_ok">Ok</string>
+    <string name="button_learn_draw">Draw</string>
+    <string name="button_learn_show">Teach me!</string>
+    <string name="title_activity_learn_range_selection">Range</string>
+    <string name="title_activity_learn_draw">Learn / Draw</string>
+    <string name="pronunciation">Pronunciation</string>
+    <string name="translation">Translation</string>
+    <string name="learn_draw_correct">correct - %d%%</string>
+    <string name="learn_draw_wrong">wrong - %s</string>
+    <string name="learn_draw_status">%1$d of %2$d done</string>
+    <string name="learn_done">Congratulations, you\'re done!</string>
 </resources>

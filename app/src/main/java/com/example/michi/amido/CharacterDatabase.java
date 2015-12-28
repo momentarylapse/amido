@@ -256,6 +256,11 @@ public class CharacterDatabase {
             return d / num_strokes * 1000;
         }
 
+        public float score(Character c) {
+            float d = distance(c);
+            return max(0, (float)(1.0 - pow(d / 200.0, 1.5)));
+        }
+
         public String getSimpleEnglish() {
             if (english.contains("|"))
                 return english.split("|")[0];
@@ -403,10 +408,7 @@ public class CharacterDatabase {
         Answer al = new Answer(new AnswerItem(dummy_no_character, 0));
 
         for (Character c : characters) {
-            if (c.num_strokes != digest.num_strokes)
-                continue;
-            float d = c.distance(digest);
-            float score = (float)(1.0 - pow(d / 200.0, 1.5));
+            float score = c.score(digest);
             if (score > 0)
                 al.append(new AnswerItem(c, score));
         }

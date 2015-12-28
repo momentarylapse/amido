@@ -22,4 +22,14 @@
     <string name="draw_auto_clear">wird automatisch gelöscht</string>
     <string name="title_activity_learn">Lernen</string>
     <string name="button_ok">Ok</string>
+    <string name="button_learn_draw">Zeichnen</string>
+    <string name="button_learn_show">Brings mir bei!</string>
+    <string name="title_activity_learn_range_selection">Bereich</string>
+    <string name="pronunciation">Aussprache</string>
+    <string name="translation">Übersetzung</string>
+    <string name="title_activity_learn_draw">Lernen / Malen</string>
+    <string name="learn_draw_correct">richtig - %d%%</string>
+    <string name="learn_draw_wrong">falsch - %s</string>
+    <string name="learn_draw_status">%1$d von %2$d fertig</string>
+    <string name="learn_done">Hurra, fertig!</string>
 </resources>

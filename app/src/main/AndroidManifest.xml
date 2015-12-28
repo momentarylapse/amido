@@ -28,11 +28,32 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!-- ATTENTION: This was auto-generated to add Google Play services to your project for
-             App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
+        <!--
+             ATTENTION: This was auto-generated to add Google Play services to your project for
+             App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
+        -->
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
+        <activity
+            android:name=".LearnRangeSelectionActivity"
+            android:label="@string/title_activity_learn_range_selection"
+            android:parentActivityName=".LearnActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.michi.amido.LearnActivity" />
+        </activity>
+        <activity
+            android:name=".LearnDrawActivity"
+            android:label="@string/title_activity_learn_draw"
+            android:parentActivityName=".LearnActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.michi.amido.LearnActivity" />
+        </activity>
     </application>
 
 </manifest>
