@@ -261,16 +261,20 @@ public class CharacterDatabase {
             return max(0, (float)(1.0 - pow(d / 200.0, 1.5)));
         }
 
-        public String getSimpleEnglish() {
-            if (english.contains("|"))
-                return english.split("|")[0];
-            return english;
+        public static String simplify(String lang) {
+            if (lang.contains("|"))
+                return lang.split("|")[0];
+            return lang;
 
         }
-        public String getSimpleGerman() {
-            if (german.contains("|"))
-                return german.split("\\|")[0];
-            return german;
+
+        public String getSimpleTranslation() {
+            return simplify(getTranslation());
+        }
+        public String getTranslation() {
+            if (context.getResources().getString(R.string.language).equals("de"))
+                return german;
+            return english;
         }
 
 
@@ -312,7 +316,7 @@ public class CharacterDatabase {
     private ArrayList<Character> characters = new ArrayList<>();
     private Character dummy_no_character;
 
-    Context context;
+    static Context context;
 
     public enum State {
         NOT_LOADED,

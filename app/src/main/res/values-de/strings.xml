@@ -11,13 +11,13 @@
     <string name="details_pronunciation">Aussprache</string>
     <string name="draw_clear">Löschen</string>
     <string name="draw_ok">Ok</string>
-    <string name="search_answer_format">%1$s - %3$s </string>
+    <string name="search_answer_format">%1$s - %2$s</string>
     <string name="action_draw">Malen</string>
     <string name="action_learn">Lernen</string>
     <string name="action_search">Suchen</string>
     <string name="title_activity_draw">Malen</string>
     <string name="title_activity_search">Suchen</string>
-    <string name="draw_answer_format">%1$s - %3$s - %4$d%%</string>
+    <string name="draw_answer_format">%1$s - %2$s - %3$d%%</string>
     <string name="draw_delete_stroke">Strich löschen</string>
     <string name="draw_auto_clear">wird automatisch gelöscht</string>
     <string name="title_activity_learn">Lernen</string>
@@ -33,4 +33,8 @@
     <string name="learn_draw_status">%1$d von %2$d fertig</string>
     <string name="learn_done">Hurra, fertig!</string>
     <string name="title_activity_learn_done">Fertig</string>
+    <string name="language">de</string>
+    <string name="title_activity_learn_show">Lernen</string>
+    <string name="search_nothing">Kein Zeichen für \"%s\" gefunden.</string>
+    <string name="draw_nothing">Kein passendes Zeichen gefunden.</string>
 </resources>

@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 
 public class DrawActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
@@ -111,8 +112,11 @@ public class DrawActivity extends AppCompatActivity implements SearchView.OnQuer
         lv.setAdapter(aa);
         for (CharacterDatabase.AnswerItem i : al) {
             String s = getResources().getString(R.string.draw_answer_format);
-            aa.add(String.format(s, i.c.glyph, i.c.getSimpleEnglish(), i.c.getSimpleGerman(), (int) (i.score * 100)));
+            aa.add(String.format(s, i.c.glyph, i.c.getSimpleTranslation(), (int) (i.score * 100)));
         }
+
+        if (al.size() == 0)
+            Toast.makeText(this, getResources().getText(R.string.draw_nothing), Toast.LENGTH_SHORT).show();
     }
 
     public void onOkButton(View b) {

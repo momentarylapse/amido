@@ -37,10 +37,9 @@ public class LearnRangeSelectionActivity extends AppCompatActivity {
                     myIntent.putExtra("list", getList(position));
                     startActivity(myIntent);
                 } else {
-                    /*Intent myIntent = new Intent(LearnRangeSelectionActivity.this, LearnShowActivity.class);
+                    Intent myIntent = new Intent(LearnRangeSelectionActivity.this, LearnShowActivity.class);
                     myIntent.putExtra("list", getList(position));
-                    startActivity(myIntent);*/
-                    Toast.makeText(LearnRangeSelectionActivity.this, "not implemented yet: " + type, Toast.LENGTH_SHORT).show();
+                    startActivity(myIntent);
                 }
             }
         });

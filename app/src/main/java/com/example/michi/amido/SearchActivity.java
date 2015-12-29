@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 
 public class SearchActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
@@ -41,7 +42,7 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
 
 
         String query = getIntent().getStringExtra("query");
-        setAnswers(db.find(query));
+        setAnswers(db.find(query), query);
     }
 
     public void showDetails(CharacterDatabase.Character c) {
@@ -74,7 +75,7 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
         return super.onOptionsItemSelected(item);
     }
 
-    public void setAnswers(CharacterDatabase.Answer al) {
+    public void setAnswers(CharacterDatabase.Answer al, String query) {
         answer_list = al;
 
         ListView lv = (ListView)findViewById(R.id.answer_list);
@@ -82,13 +83,18 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
         lv.setAdapter(aa);
         for (CharacterDatabase.AnswerItem i : al){
             String s = getResources().getString(R.string.search_answer_format);
-            aa.add(String.format(s, i.c.glyph, i.c.getSimpleEnglish(), i.c.getSimpleGerman()));
+            aa.add(String.format(s, i.c.glyph, i.c.getSimpleTranslation()));
+        }
+
+        if (al.size() == 0) {
+            String s = getResources().getString(R.string.search_nothing);
+            Toast.makeText(this, String.format(s, query), Toast.LENGTH_SHORT).show();
         }
     }
 
     @Override
     public boolean onQueryTextSubmit(String query) {
-        setAnswers(db.find(query));
+        setAnswers(db.find(query), query);
         return false;
     }
 

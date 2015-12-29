@@ -60,18 +60,22 @@ public class CharacterView extends View {
         initialisePaint();
     }
 
-    public void close() {
+    void stopAnimation() {
         if (animationTimer != null)
             animationTimer.cancel();
         animationTimer = null;
         animating = false;
     }
 
+    public void close() {
+        stopAnimation();
+    }
+
     public void setDemo(CharacterDatabase.Character c) {
+        clear();
+
         demo = c;
         editable = false;
-
-        clear();
 
         for (CharacterDatabase.StrokeDigest s : demo.strokes_digest) {
             strokes.add(s.undigest());
@@ -273,8 +277,11 @@ public class CharacterView extends View {
     }
 
     public void clear() {
-        strokes.clear();
+        stopAnimation();
+        demo = null;
+        editable = true;
         autoClear = false;
+        strokes.clear();
         this.invalidate();
     }
 
@@ -286,7 +293,8 @@ public class CharacterView extends View {
     }
 
     public void setAutoClear() {
-        autoClear = true;
+        if (strokes.size() > 0)
+            autoClear = true;
         this.invalidate();
     }
 
