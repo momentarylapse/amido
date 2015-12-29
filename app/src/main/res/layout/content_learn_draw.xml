@@ -36,14 +36,17 @@
                     android:text="@string/pronunciation"
                     android:id="@+id/textView4"
                     android:layout_column="0"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:textSize="@dimen/abc_text_size_medium_material"
+                    android:layout_marginRight="10dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="New Text"
                     android:id="@+id/pronunciation"
-                    android:layout_column="1" />
+                    android:layout_column="1"
+                    android:textSize="@dimen/abc_text_size_headline_material" />
             </TableRow>
 
             <TableRow
@@ -57,14 +60,17 @@
                     android:text="@string/translation"
                     android:id="@+id/textView5"
                     android:layout_column="0"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:textSize="@dimen/abc_text_size_medium_material"
+                    android:layout_marginRight="10dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="New Text"
                     android:id="@+id/translation"
-                    android:layout_column="1" />
+                    android:layout_column="1"
+                    android:textSize="@dimen/abc_text_size_large_material" />
             </TableRow>
         </TableLayout>
 
@@ -119,7 +125,8 @@
             android:id="@+id/status"
             android:layout_column="0"
             android:textStyle="bold"
-            android:layout_marginRight="20dp" />
+            android:layout_marginRight="20dp"
+            android:textSize="@dimen/abc_text_size_medium_material" />
 
     </LinearLayout>
 

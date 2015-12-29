@@ -60,9 +60,9 @@ public class LearnShowActivity extends AppCompatActivity {
     public void setMode(Mode m) {
         mode = m;
         ImageButton b1 = (ImageButton)findViewById(R.id.button_undo);
-        b1.setActivated(m == Mode.USER);
+        b1.setVisibility(m == Mode.USER ? View.VISIBLE : View.INVISIBLE);
         ImageButton b2 = (ImageButton)findViewById(R.id.button_clear);
-        b2.setActivated(m == Mode.USER);
+        b2.setVisibility(m == Mode.USER ? View.VISIBLE : View.INVISIBLE);
         characterView.clear();
         if (m == Mode.DEMO) {
             characterView.setDemo(curCharacter);
