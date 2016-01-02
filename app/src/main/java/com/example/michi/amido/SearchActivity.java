@@ -46,7 +46,7 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
     }
 
     public void showDetails(CharacterDatabase.Character c) {
-        DialogFragment f = DetailsFragment.newInstance(c.id);
+        DialogFragment f = DetailsFragment.newInstance(c);
         f.show(getFragmentManager(), "");
     }
 

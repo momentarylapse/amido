@@ -22,6 +22,7 @@ import android.widget.Toast;
  * create an instance of this fragment.
  */
 public class DetailsFragment extends DialogFragment {
+    private String type;
     private int char_id;
     private CharacterView characterView;
 
@@ -31,10 +32,11 @@ public class DetailsFragment extends DialogFragment {
         // Required empty public constructor
     }
 
-    public static DetailsFragment newInstance(int char_id) {
+    public static DetailsFragment newInstance(CharacterDatabase.Character c) {
         DetailsFragment fragment = new DetailsFragment();
         Bundle args = new Bundle();
-        args.putInt("id", char_id);
+        args.putString("type", c.type);
+        args.putInt("id", c.id);
         fragment.setArguments(args);
         return fragment;
     }
@@ -44,6 +46,7 @@ public class DetailsFragment extends DialogFragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             char_id = getArguments().getInt("id");
+            type = getArguments().getString("type");
         }
     }
 
@@ -56,7 +59,7 @@ public class DetailsFragment extends DialogFragment {
 
         CharacterDatabase db = CharacterDatabase.getInstance(view.getContext());
 
-        CharacterDatabase.Character c = db.get(char_id);
+        CharacterDatabase.Character c = db.get(type, char_id);
 
         TextView tv = (TextView)view.findViewById(R.id.character);
         tv.setText(c.glyph);

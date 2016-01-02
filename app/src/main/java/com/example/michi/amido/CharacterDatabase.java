@@ -378,6 +378,7 @@ public class CharacterDatabase {
             while (eventType != XmlPullParser.END_DOCUMENT) {
                 //Search for record tags
                 if ((eventType == XmlPullParser.START_TAG) && (_xml.getName().equals("character"))) {
+                    c.type = "kanji";
                     c.id = _xml.getAttributeIntValue(null, "id", 0);
                     c.glyph = _xml.getAttributeValue(null, "glyph");
                     c.pronunciation = _xml.getAttributeValue(null, "pronunciation");
@@ -433,19 +434,19 @@ public class CharacterDatabase {
         return al;
     }
 
-    public Character get(int id) {
+    public Character get(String type, int id) {
         makeUsable();
         for (Character c : characters) {
-            if (c.id == id)
+            if ((c.type.equals(type)) && (c.id == id))
                 return c;
         }
         return dummy_no_character;
     }
 
-    public ArrayList<Character> get(int ids[]) {
+    public ArrayList<Character> get(String type, int ids[]) {
         ArrayList<Character> list = new ArrayList<>();
         for (int i : ids) {
-            CharacterDatabase.Character c = get(i);
+            CharacterDatabase.Character c = get(type, i);
             if (c != null)
                 list.add(c);
         }

@@ -48,7 +48,7 @@ public class LearnDrawActivity extends AppCompatActivity {
         key = getIntent().getStringExtra("key");
 
         int ids[] = getIntent().getIntArrayExtra("list");
-        list = db.get(ids);
+        list = db.get(type, ids);
         done = 0;
         all = list.size();
         score_sum = 0;
@@ -118,7 +118,7 @@ public class LearnDrawActivity extends AppCompatActivity {
     }
 
     public void onShowLastCharacterButton(View v) {
-        DialogFragment f = DetailsFragment.newInstance(lastCharacter.id);
+        DialogFragment f = DetailsFragment.newInstance(lastCharacter);
         f.show(getFragmentManager(), "");
     }
 

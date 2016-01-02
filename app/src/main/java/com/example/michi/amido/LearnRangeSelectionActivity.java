@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public class LearnRangeSelectionActivity extends AppCompatActivity {
@@ -17,6 +18,10 @@ public class LearnRangeSelectionActivity extends AppCompatActivity {
     final static int MAX = 1000;
 
     String type;
+    String method;
+
+    ListManager listManager;
+    ArrayList<ListManager.List> lists;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,50 +31,42 @@ public class LearnRangeSelectionActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         type = getIntent().getStringExtra("type");
+        method = getIntent().getStringExtra("method");
 
         ListView lv = (ListView)findViewById(R.id.range_list);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ListManager.List list = lists.get(position);
 
                 Intent myIntent;
-                if (type.equals("draw")) {
+                if (method.equals("draw")) {
                     myIntent = new Intent(LearnRangeSelectionActivity.this, LearnDrawActivity.class);
                 } else {
                     myIntent = new Intent(LearnRangeSelectionActivity.this, LearnShowActivity.class);
                 }
                 myIntent.putExtra("type", type);
-                myIntent.putExtra("list", getList(position));
-                myIntent.putExtra("key", getKey(position));
+                myIntent.putExtra("method", method);
+                myIntent.putExtra("list", list.getIds());
+                myIntent.putExtra("key", list.key);
                 startActivity(myIntent);
             }
         });
 
         ProgressTracker pt = ProgressTracker.getInstance(this);
 
+        listManager = ListManager.getInstance(this);
+        lists = listManager.getLists(type, 0);
+
         ArrayAdapter<String> aa = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
         lv.setAdapter(aa);
-        for (int i=0; i<MAX/STEP; i++) {
-            String key = getKey(i);
-            Date last = pt.getLast(type, key);
+        for (ListManager.List l : lists) {
+            Date last = pt.getLast(type, l.key);
             if (last == null)
-                aa.add(key);
+                aa.add(l.key);
             else
-                aa.add(key + "       (" + pt.niceDate(last) + ")");
+                aa.add(l.key + "       (" + pt.niceDate(last) + ")");
         }
-    }
-
-    public String getKey(int position) {
-        return String.format("%d-%d", position * STEP+1, position * STEP + STEP);
-    }
-
-    public int[] getList(int position) {
-        int first = position * STEP + 1;
-        int last = position * STEP + STEP;
-        int list[] = new int[last - first + 1];
-        for (int i=first; i<=last; i++)
-            list[i-first] = i;
-        return list;
     }
 
 }

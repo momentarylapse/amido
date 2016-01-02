@@ -45,4 +45,5 @@
     <string name="date_yesterday">yesterday</string>
     <string name="date_days_ago">%d days ago</string>
     <string name="button_show_last">Show last character</string>
+    <string name="date_hours_ago">%d hours ago</string>
 </resources>

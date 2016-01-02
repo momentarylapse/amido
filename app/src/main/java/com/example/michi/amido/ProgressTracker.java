@@ -134,7 +134,7 @@ public class ProgressTracker {
                     case XmlPullParser.START_TAG:
                         if (name.equals("success")) {
                             Success s = new Success("", "", 0);
-                            s.type = x.getAttributeValue(null, "type");
+                            s.type = "kanji";//x.getAttributeValue(null, "type");
                             s.key = x.getAttributeValue(null, "key");
                             s.score = Float.valueOf(x.getAttributeValue(null, "score"));
                             s.date = new Date(Long.valueOf(x.getAttributeValue(null, "date")));
@@ -157,11 +157,9 @@ public class ProgressTracker {
 
     static String niceDate(Date date) {
         Date now = new Date();
-        int days = (int)((now.getTime() - date.getTime()) / (24*60*60*1000));
-        if (days == 0)
-            return context.getResources().getString(R.string.date_today);
-        if (days == 1)
-            return context.getResources().getString(R.string.date_yesterday);
-        return String.format(context.getResources().getString(R.string.date_days_ago), days);
+        int hours = (int)((now.getTime() - date.getTime()) / (60*60*1000));
+        if (hours < 24)
+            return String.format(context.getResources().getString(R.string.date_hours_ago), hours);
+        return String.format(context.getResources().getString(R.string.date_days_ago), hours/24);
     }
 }

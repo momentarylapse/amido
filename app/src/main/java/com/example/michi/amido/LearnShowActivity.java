@@ -47,7 +47,7 @@ public class LearnShowActivity extends AppCompatActivity {
         key = getIntent().getStringExtra("key");
 
         int ids[] = getIntent().getIntArrayExtra("list");
-        list = db.get(ids);
+        list = db.get(type, ids);
         done = 0;
 
         chooseRandom();

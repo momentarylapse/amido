@@ -62,9 +62,8 @@ public class DrawActivity extends AppCompatActivity implements SearchView.OnQuer
     }
 
     public void showDetails(CharacterDatabase.Character c) {
-        DialogFragment f = DetailsFragment.newInstance(c.id);
+        DialogFragment f = DetailsFragment.newInstance(c);
         f.show(getFragmentManager(), "");
-
     }
 
     @Override

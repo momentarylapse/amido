@@ -23,13 +23,15 @@ public class LearnActivity extends AppCompatActivity {
 
     public void onShowButton(View view) {
         Intent myIntent = new Intent(LearnActivity.this, LearnRangeSelectionActivity.class);
-        myIntent.putExtra("type", "show");
+        myIntent.putExtra("type", "kanji");
+        myIntent.putExtra("method", "show");
         startActivity(myIntent);
     }
 
     public void onDrawButton(View view) {
         Intent myIntent = new Intent(LearnActivity.this, LearnRangeSelectionActivity.class);
-        myIntent.putExtra("type", "draw");
+        myIntent.putExtra("type", "kanji");
+        myIntent.putExtra("method", "draw");
         startActivity(myIntent);
     }
 }
