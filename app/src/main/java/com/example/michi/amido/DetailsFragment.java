@@ -66,6 +66,8 @@ public class DetailsFragment extends DialogFragment {
         tv.setText(c.english);
         tv = (TextView)view.findViewById(R.id.german);
         tv.setText(c.german);
+        tv = (TextView)view.findViewById(R.id.id);
+        tv.setText("" + c.id);
 
         characterView = (CharacterView)view.findViewById(R.id.view2);
         characterView.setDemo(c);

@@ -128,6 +128,13 @@
             android:layout_marginRight="20dp"
             android:textSize="@dimen/abc_text_size_medium_material" />
 
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/button_show_last"
+            android:onClick="onShowLastCharacterButton"
+            android:id="@+id/button_show_last" />
+
     </LinearLayout>
 
 </RelativeLayout>

@@ -37,4 +37,9 @@
     <string name="title_activity_learn_show">Lernen</string>
     <string name="search_nothing">Kein Zeichen für \"%s\" gefunden.</string>
     <string name="draw_nothing">Kein passendes Zeichen gefunden.</string>
+    <string name="details_id">Id</string>
+    <string name="date_days_ago">vor %d Tagen</string>
+    <string name="date_today">heute</string>
+    <string name="date_yesterday">gestern</string>
+    <string name="button_show_last">Letztes Zeichen zeigen</string>
 </resources>

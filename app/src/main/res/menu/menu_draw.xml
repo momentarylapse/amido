@@ -4,7 +4,7 @@
     <item android:id="@+id/action_search" android:title="@string/action_search"
         android:orderInCategory="200" app:showAsAction="always" app:actionViewClass="android.widget.SearchView" android:icon="@android:drawable/ic_menu_search" />
     <item android:id="@+id/action_learn" android:title="@string/action_learn"
-        android:orderInCategory="100" app:showAsAction="always" android:icon="@android:drawable/ic_menu_agenda" />
+        android:orderInCategory="100" app:showAsAction="always" />
     <item android:id="@+id/action_settings" android:title="@string/action_settings"
         android:orderInCategory="100" app:showAsAction="never" />
 </menu>

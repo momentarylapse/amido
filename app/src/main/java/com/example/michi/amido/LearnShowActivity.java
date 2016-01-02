@@ -22,6 +22,9 @@ public class LearnShowActivity extends AppCompatActivity {
     CharacterDatabase.Character curCharacter;
     int done;
 
+    String type;
+    String key;
+
     enum Mode {
         DEMO,
         USER
@@ -39,6 +42,9 @@ public class LearnShowActivity extends AppCompatActivity {
         characterView = (CharacterView) findViewById(R.id.view);
 
         CharacterDatabase db = CharacterDatabase.getInstance(this);
+
+        type = getIntent().getStringExtra("type");
+        key = getIntent().getStringExtra("key");
 
         int ids[] = getIntent().getIntArrayExtra("list");
         list = db.get(ids);

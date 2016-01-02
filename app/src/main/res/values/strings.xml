@@ -40,4 +40,9 @@
     <string name="language">en</string>
     <string name="search_nothing">No characters found matching \"%s\".</string>
     <string name="draw_nothing">Does not match any character.</string>
+    <string name="details_id">Id</string>
+    <string name="date_today">today</string>
+    <string name="date_yesterday">yesterday</string>
+    <string name="date_days_ago">%d days ago</string>
+    <string name="button_show_last">Show last character</string>
 </resources>
