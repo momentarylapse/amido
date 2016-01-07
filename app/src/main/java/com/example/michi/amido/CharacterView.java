@@ -171,6 +171,7 @@ public class CharacterView extends View {
     private static final int STROKE_COLOR = 0xFF707070;
     private static final int STROKE_COLOR_BACK = 0xFFa0a0a0;
     private static final int CUR_STROKE_COLOR = 0xFFFF7070;
+    private static final int TEXT_COLOR = 0xff909090;
 
     private static final int BACKGROUND_ACTIVE = Color.WHITE;
 
@@ -191,7 +192,7 @@ public class CharacterView extends View {
 
         fontSize = 15f * density;
         textPaint.setTextSize(fontSize);
-        textPaint.setColor(Color.BLACK);
+        textPaint.setColor(TEXT_COLOR);
 
         borderWidth = BORDER_DP * density;
         borderPaint.setStrokeWidth(borderWidth);
@@ -239,7 +240,7 @@ public class CharacterView extends View {
         canvas.drawText(s, 10f, fontSize, textPaint);
 
         if (autoClear)
-            canvas.drawText(getResources().getString(R.string.draw_auto_clear), 10f, getHeight() - 8, textPaint);
+            canvas.drawText(getResources().getString(R.string.draw_auto_clear), 10f, getHeight() - 10, textPaint);
     }
 
     protected void drawStroke(Canvas canvas, CharacterDatabase.Stroke s, Paint paint) {

@@ -56,9 +56,9 @@ public class LearnShowActivity extends AppCompatActivity {
     public void setCharacter(CharacterDatabase.Character c) {
         curCharacter = c;
         TextView tv = (TextView)findViewById(R.id.translation);
-        tv.setText(c.german);
+        tv.setText(c.niceList(c.getTranslation()));
         tv = (TextView)findViewById(R.id.pronunciation);
-        tv.setText(c.pronunciation);
+        tv.setText(c.niceList(c.pronunciation));
         updateStatus();
         setMode(Mode.DEMO);
     }

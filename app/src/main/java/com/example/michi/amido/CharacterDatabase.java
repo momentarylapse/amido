@@ -263,9 +263,21 @@ public class CharacterDatabase {
 
         public static String simplify(String lang) {
             if (lang.contains("|"))
-                return lang.split("|")[0];
-            return lang;
+                return lang.split("\\|")[0].replace(",", ", ");
+            return lang.replace(",", ", ");
 
+        }
+
+        public static String niceList(String lang) {
+            return lang.replace(",", ", ").replace("|", ", ");
+            /*String[] sl = lang.split(",|\\|");
+            String r = "";
+            for (String s : sl)
+                if (r.length() > 0)
+                    r = r + ", " + s;
+                else
+                    r = s;
+            return r;*/
         }
 
         public String getSimpleTranslation() {

@@ -46,7 +46,8 @@
                     android:text="New Text"
                     android:id="@+id/pronunciation"
                     android:layout_column="1"
-                    android:textSize="@dimen/abc_text_size_headline_material" />
+                    android:textSize="@dimen/abc_text_size_headline_material"
+                    android:breakStrategy="balanced" />
             </TableRow>
 
             <TableRow
@@ -70,7 +71,8 @@
                     android:text="New Text"
                     android:id="@+id/translation"
                     android:layout_column="1"
-                    android:textSize="@dimen/abc_text_size_large_material" />
+                    android:textSize="@dimen/abc_text_size_large_material"
+                    android:breakStrategy="balanced" />
             </TableRow>
         </TableLayout>
 
