@@ -23,9 +23,9 @@ public class LearnDrawActivity extends AppCompatActivity {
 
     CharacterView characterView;
 
-    ArrayList<CharacterDatabase.Character> list;
-    CharacterDatabase.Character curCharacter = null;
-    CharacterDatabase.Character lastCharacter = null;
+    ArrayList<Character> list;
+    Character curCharacter = null;
+    Character lastCharacter = null;
     int done;
     int all;
     float score_sum;
@@ -59,10 +59,10 @@ public class LearnDrawActivity extends AppCompatActivity {
         chooseRandom();
     }
 
-    public void setCharacter(CharacterDatabase.Character c) {
+    public void setCharacter(Character c) {
         curCharacter = c;
         TextView tv = (TextView)findViewById(R.id.translation);
-        tv.setText(c.niceList(c.getTranslation()));
+        tv.setText(c.niceList(c.getTranslation(this)));
         tv = (TextView)findViewById(R.id.pronunciation);
         tv.setText(c.niceList(c.pronunciation));
         characterView.setAutoClear();
@@ -110,7 +110,7 @@ public class LearnDrawActivity extends AppCompatActivity {
         chooseRandom();
     }
 
-    public void setLastCharacter(CharacterDatabase.Character c) {
+    public void setLastCharacter(Character c) {
         lastCharacter = c;
 
         Button b = (Button)findViewById(R.id.button_show_last);

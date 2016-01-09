@@ -32,7 +32,7 @@ public class DetailsFragment extends DialogFragment {
         // Required empty public constructor
     }
 
-    public static DetailsFragment newInstance(CharacterDatabase.Character c) {
+    public static DetailsFragment newInstance(Character c) {
         DetailsFragment fragment = new DetailsFragment();
         Bundle args = new Bundle();
         args.putString("type", c.type);
@@ -59,7 +59,7 @@ public class DetailsFragment extends DialogFragment {
 
         CharacterDatabase db = CharacterDatabase.getInstance(view.getContext());
 
-        CharacterDatabase.Character c = db.get(type, char_id);
+        Character c = db.get(type, char_id);
 
         TextView tv = (TextView)view.findViewById(R.id.character);
         tv.setText(c.glyph);

@@ -45,7 +45,7 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
         setAnswers(db.find(query), query);
     }
 
-    public void showDetails(CharacterDatabase.Character c) {
+    public void showDetails(Character c) {
         DialogFragment f = DetailsFragment.newInstance(c);
         f.show(getFragmentManager(), "");
     }
@@ -83,7 +83,7 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
         lv.setAdapter(aa);
         for (CharacterDatabase.AnswerItem i : al){
             String s = getResources().getString(R.string.search_answer_format);
-            aa.add(String.format(s, i.c.glyph, i.c.getSimpleTranslation()));
+            aa.add(String.format(s, i.c.glyph, i.c.getSimpleTranslation(this)));
         }
 
         if (al.size() == 0) {

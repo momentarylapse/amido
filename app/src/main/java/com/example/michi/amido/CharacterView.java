@@ -43,9 +43,9 @@ import static java.lang.Math.min;
 public class CharacterView extends View {
 
 
-    private ArrayList<CharacterDatabase.Stroke> strokes = new ArrayList<>();
-    private CharacterDatabase.Stroke cur_stroke = new CharacterDatabase.Stroke();
-    private CharacterDatabase.Character demo = null;
+    private ArrayList<Stroke> strokes = new ArrayList<>();
+    private Stroke cur_stroke = new Stroke();
+    private Character demo = null;
 
     boolean editable = true;
     boolean animating = false;
@@ -71,13 +71,13 @@ public class CharacterView extends View {
         stopAnimation();
     }
 
-    public void setDemo(CharacterDatabase.Character c) {
+    public void setDemo(Character c) {
         clear();
 
         demo = c;
         editable = false;
 
-        for (CharacterDatabase.StrokeDigest s : demo.strokes_digest) {
+        for (StrokeDigest s : demo.strokes_digest) {
             strokes.add(s.undigest());
         }
 
@@ -101,8 +101,8 @@ public class CharacterView extends View {
         }
     }
 
-    public CharacterDatabase.Point event2point(MotionEvent event, int index) {
-        return new CharacterDatabase.Point(event.getX(index) / (float)getWidth(), event.getY(index) / (float)getHeight());
+    public Point event2point(MotionEvent event, int index) {
+        return new Point(event.getX(index) / (float)getWidth(), event.getY(index) / (float)getHeight());
     }
 
     // BEGIN_INCLUDE(onTouchEvent)
@@ -133,7 +133,7 @@ public class CharacterView extends View {
             case MotionEvent.ACTION_UP: {
                 if (cur_stroke.points.size() > 2) {
                     strokes.add(cur_stroke);
-                    cur_stroke = new CharacterDatabase.Stroke();
+                    cur_stroke = new Stroke();
                 }
                 break;
             }
@@ -231,7 +231,7 @@ public class CharacterView extends View {
                 drawStrokePartial(canvas, strokes.get(cur), t, curStrokePaint);
 
         } else {
-            for (CharacterDatabase.Stroke s : strokes)
+            for (Stroke s : strokes)
                 drawStroke(canvas, s, strokePaint);
             drawStroke(canvas, cur_stroke, curStrokePaint);
         }
@@ -243,29 +243,29 @@ public class CharacterView extends View {
             canvas.drawText(getResources().getString(R.string.draw_auto_clear), 10f, getHeight() - 10, textPaint);
     }
 
-    protected void drawStroke(Canvas canvas, CharacterDatabase.Stroke s, Paint paint) {
+    protected void drawStroke(Canvas canvas, Stroke s, Paint paint) {
 
         Path path = new Path();
         if (s.points.size() > 0)
             path.moveTo(s.points.get(0).x * getWidth(), s.points.get(0).y * getHeight());
-        for (CharacterDatabase.Point p : s.points)
+        for (Point p : s.points)
             path.lineTo(p.x * getWidth(), p.y * getHeight());
 
         canvas.drawPath(path, paint);
     }
 
-    protected void drawStrokePartial(Canvas canvas, CharacterDatabase.Stroke s, float t, Paint paint) {
+    protected void drawStrokePartial(Canvas canvas, Stroke s, float t, Paint paint) {
 
         Path path = new Path();
         if (s.points.size() > 0)
             path.moveTo(s.points.get(0).x * getWidth(), s.points.get(0).y * getHeight());
         float strokeLength = s.getLength();
         float pathLength = 0;
-        CharacterDatabase.Point last = s.points.get(0);
-        for (CharacterDatabase.Point p : s.points) {
+        Point last = s.points.get(0);
+        for (Point p : s.points) {
             float dl = p.distance(last);
             if (pathLength > t * strokeLength) {
-                CharacterDatabase.Point pp = last.interpolateTo(p, (t * strokeLength - pathLength) / dl);
+                Point pp = last.interpolateTo(p, (t * strokeLength - pathLength) / dl);
                 path.lineTo(pp.x * getWidth(), pp.y * getHeight());
                 break;
             }
@@ -299,7 +299,7 @@ public class CharacterView extends View {
         this.invalidate();
     }
 
-    public CharacterDatabase.Character getDigest() {
+    public Character getDigest() {
         return CharacterDatabase.digest(strokes);
     }
 

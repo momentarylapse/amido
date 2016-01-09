@@ -61,7 +61,7 @@ public class DrawActivity extends AppCompatActivity implements SearchView.OnQuer
         characterView = (CharacterView) findViewById(R.id.view);
     }
 
-    public void showDetails(CharacterDatabase.Character c) {
+    public void showDetails(Character c) {
         DialogFragment f = DetailsFragment.newInstance(c);
         f.show(getFragmentManager(), "");
     }
@@ -111,7 +111,7 @@ public class DrawActivity extends AppCompatActivity implements SearchView.OnQuer
         lv.setAdapter(aa);
         for (CharacterDatabase.AnswerItem i : al) {
             String s = getResources().getString(R.string.draw_answer_format);
-            aa.add(String.format(s, i.c.glyph, i.c.getSimpleTranslation(), (int) (i.score * 100)));
+            aa.add(String.format(s, i.c.glyph, i.c.getSimpleTranslation(this), (int) (i.score * 100)));
         }
 
         if (al.size() == 0)

@@ -18,8 +18,8 @@ import java.util.Random;
 public class LearnShowActivity extends AppCompatActivity {
     CharacterView characterView;
 
-    ArrayList<CharacterDatabase.Character> list;
-    CharacterDatabase.Character curCharacter;
+    ArrayList<Character> list;
+    Character curCharacter;
     int done;
 
     String type;
@@ -53,10 +53,10 @@ public class LearnShowActivity extends AppCompatActivity {
         chooseRandom();
     }
 
-    public void setCharacter(CharacterDatabase.Character c) {
+    public void setCharacter(Character c) {
         curCharacter = c;
         TextView tv = (TextView)findViewById(R.id.translation);
-        tv.setText(c.niceList(c.getTranslation()));
+        tv.setText(c.niceList(c.getTranslation(this)));
         tv = (TextView)findViewById(R.id.pronunciation);
         tv.setText(c.niceList(c.pronunciation));
         updateStatus();
