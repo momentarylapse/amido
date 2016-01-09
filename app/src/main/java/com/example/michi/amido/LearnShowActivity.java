@@ -105,7 +105,7 @@ public class LearnShowActivity extends AppCompatActivity {
         }
         float score = curCharacter.score(characterView.getDigest());
         if (score > 0) {
-            Toast.makeText(this, String.format(getResources().getString(R.string.learn_draw_correct), curCharacter.glyph, (int) (score * 100.0f)), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, String.format(getResources().getString(R.string.learn_draw_correct), curCharacter.glyph, CharacterDatabase.scoreToString(score)), Toast.LENGTH_SHORT).show();
             list.remove(curCharacter);
             done ++;
             chooseRandom();

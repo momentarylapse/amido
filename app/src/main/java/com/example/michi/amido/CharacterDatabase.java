@@ -33,7 +33,24 @@ public class CharacterDatabase {
             this.c = c;
             this.score = score;
         }
+        public String getScore() {
+            return scoreToString(score);
+        }
     }
+
+    public static String scoreToString(float score) {
+        if (score > 0.8f)
+            return "★★★★★";
+        if (score > 0.6f)
+            return "★★★★☆";
+        if (score > 0.4f)
+            return "★★★☆☆";
+        if (score > 0.2f)
+            return "★★☆☆☆";
+        return "★☆☆☆☆";
+    }
+
+
     static class Answer extends ArrayList<CharacterDatabase.AnswerItem> {
         AnswerItem best;
         public Answer(AnswerItem best) {

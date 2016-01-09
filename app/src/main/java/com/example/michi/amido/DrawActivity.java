@@ -111,7 +111,7 @@ public class DrawActivity extends AppCompatActivity implements SearchView.OnQuer
         lv.setAdapter(aa);
         for (CharacterDatabase.AnswerItem i : al) {
             String s = getResources().getString(R.string.draw_answer_format);
-            aa.add(String.format(s, i.c.glyph, i.c.getSimpleTranslation(this), (int) (i.score * 100)));
+            aa.add(String.format(s, i.c.glyph, i.c.getSimpleTranslation(this), i.getScore()));
         }
 
         if (al.size() == 0)

@@ -17,7 +17,7 @@
     <string name="action_learn">Learn</string>
     <string name="title_activity_draw">Draw</string>
     <string name="title_activity_search">Search</string>
-    <string name="draw_answer_format">%1$s - %2$s - %3$d%%</string>
+    <string name="draw_answer_format">%1$s - %2$s - %3$s</string>
     <string name="draw_delete_stroke">Delete stroke</string>
     <string name="draw_auto_clear">will automatically clear</string>
     <string name="title_activity_learn">Learn</string>
@@ -31,7 +31,7 @@
     <string name="title_activity_learn_draw">Learn / Draw</string>
     <string name="pronunciation">Pronunciation</string>
     <string name="translation">Translation</string>
-    <string name="learn_draw_correct">correct - %1$s - %2$d%%</string>
+    <string name="learn_draw_correct">correct - %1$s - %2$s</string>
     <string name="learn_draw_wrong">wrong - %s</string>
     <string name="learn_draw_status">%1$d of %2$d done</string>
     <string name="learn_done">Congratulations, you\'re done!</string>
@@ -47,4 +47,6 @@
     <string name="button_show_last">Show last character</string>
     <string name="date_hours_ago">%d hours ago</string>
     <string name="button_add_to_list">Add to list...</string>
+    <string name="draw_answer_format_per">%1$s - %2$s - %3$d%%</string>
+    <string name="learn_draw_correct_per">correct - %1$s - %2$d%%</string>
 </resources>
