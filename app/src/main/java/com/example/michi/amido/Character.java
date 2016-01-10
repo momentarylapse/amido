@@ -111,6 +111,23 @@ public class Character {
         return english;
     }
 
+    public ArrayList<Stroke> getStrokes() {
+        ArrayList<Stroke> strokes = new ArrayList<>();
+        try {
+            JSONArray a = new JSONArray(this.strokes);
+            for (int i=0; i<num_strokes; i++) {
+                JSONArray aa = a.getJSONArray(i);
+                Stroke s = new Stroke();
+                for (int j=0; j<aa.length() / 2; j++)
+                    s.add(new Point((float)aa.getInt(j*2) / 1000.0f, (float)aa.getInt(j*2+1) / 1000.0f));
+                strokes.add(s);
+            }
+        } catch (JSONException e) {
+            Log.e("xxx", "getStrokes: " + e.getMessage(), e);
+        }
+        return strokes;
+    }
+
 
         /*public BoundingBox getBoundingBox() {
             BoundingBox box = new BoundingBox();

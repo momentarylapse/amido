@@ -17,6 +17,11 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 
 public class DrawActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
@@ -85,6 +90,8 @@ public class DrawActivity extends AppCompatActivity implements SearchView.OnQuer
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent myIntent = new Intent(DrawActivity.this, SettingsActivity.class);
+            startActivity(myIntent);
             return true;
         } else if (id == R.id.action_learn) {
             Intent myIntent = new Intent(DrawActivity.this, LearnActivity.class);

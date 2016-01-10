@@ -72,7 +72,7 @@ public class CharacterDatabase {
     private ArrayList<Character> characters = new ArrayList<>();
     private Character dummy_no_character;
 
-    static Context context;
+    private Context context;
 
     public enum State {
         NOT_LOADED,
@@ -80,7 +80,7 @@ public class CharacterDatabase {
         LOADED
     }
 
-    State state = State.NOT_LOADED;
+    private State state = State.NOT_LOADED;
 
     static CharacterDatabase instance = null;
     public static CharacterDatabase getInstance(Context context) {
@@ -126,7 +126,7 @@ public class CharacterDatabase {
 
         //Toast.makeText(context, "loading character database...", Toast.LENGTH_SHORT).show();
         Log.i("xxx", "load...");
-        Character c = new Character();
+        Character c = null;
         XmlResourceParser _xml = context.getResources().getXml(R.xml.characters);
         try {
             //Check for end of document
@@ -134,6 +134,7 @@ public class CharacterDatabase {
             while (eventType != XmlPullParser.END_DOCUMENT) {
                 //Search for record tags
                 if ((eventType == XmlPullParser.START_TAG) && (_xml.getName().equals("character"))) {
+                    c = new Character();
                     c.type = "kanji";
                     c.id = _xml.getAttributeIntValue(null, "id", 0);
                     c.glyph = _xml.getAttributeValue(null, "glyph");
@@ -148,7 +149,6 @@ public class CharacterDatabase {
                 }
                 if ((eventType == XmlPullParser.END_TAG) && (_xml.getName().equals("character"))) {
                     characters.add(c);
-                    c = new Character();
                 }
                 eventType = _xml.next();
             }
@@ -183,7 +183,7 @@ public class CharacterDatabase {
         query = query.toLowerCase();
 
         for (Character c : characters) {
-            if ((c.glyph == query) || (c.english.toLowerCase().contains(query)) || (c.german.toLowerCase().contains(query)) || (c.pronunciation.toLowerCase().contains(query)))
+            if ((c.glyph == query) || (c.english.toLowerCase().contains(query)) || (c.german.toLowerCase().contains(query)) || (c.pronunciation.toLowerCase().contains(query)) || (query.equals("*")))
                 al.append(new AnswerItem(c, 1));
         }
 

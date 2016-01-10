@@ -77,9 +77,10 @@ public class CharacterView extends View {
         demo = c;
         editable = false;
 
-        for (StrokeDigest s : demo.strokes_digest) {
+        /*for (StrokeDigest s : demo.strokes_digest) {
             strokes.add(s.undigest());
-        }
+        }*/
+        strokes = demo.getStrokes();
 
         postInvalidate();
 

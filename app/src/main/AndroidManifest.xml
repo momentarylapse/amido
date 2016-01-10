@@ -66,7 +66,16 @@
         <activity
             android:name=".LearnShowActivity"
             android:label="@string/title_activity_learn_show"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".DrawActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.michi.amido.DrawActivity" />
+        </activity>
     </application>
 
 </manifest>
