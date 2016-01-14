@@ -136,7 +136,7 @@ public class CharacterDatabase {
                 if ((eventType == XmlPullParser.START_TAG) && (_xml.getName().equals("character"))) {
                     c = new Character();
                     c.type = "kanji";
-                    c.id = _xml.getAttributeIntValue(null, "id", 0);
+                    c.id = _xml.getAttributeIntValue(null, "tuttle", 0);
                     c.glyph = _xml.getAttributeValue(null, "glyph");
                     c.pronunciation = _xml.getAttributeValue(null, "pronunciation");
                     c.english = _xml.getAttributeValue(null, "english");

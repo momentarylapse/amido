@@ -52,4 +52,6 @@
     <string name="title_activity_settings">Settings</string>
     <string name="kana_checkbox">Show kana</string>
     <string name="admin_checkbox">Administrator mode</string>
+    <string name="learn_show_count">Characters to teach</string>
+    <string name="learn_draw_count">Characters to draw</string>
 </resources>

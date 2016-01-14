@@ -154,8 +154,6 @@ public class ListManager {
         return new List(type, key, ids);
     }
 
-    static final int STEP = 20;
-
     public ArrayList<List> getUserLists(String type) {
         ArrayList<List> lists = new ArrayList<>();
         for (List l : userLists)
@@ -164,10 +162,10 @@ public class ListManager {
         return lists;
     }
 
-    public ArrayList<List> getLists(String type, int year) {
+    public ArrayList<List> getLists(String type, int step, int year) {
         ArrayList<List> lists = getUserLists(type);//new ArrayList<>();
-        for (int i=1; i<=1000; i+= STEP)
-            lists.add(makeList(type, i, STEP));
+        for (int i=1; i<=1000; i+= step)
+            lists.add(makeList(type, i, step));
         /*if (year == 1) {
             for (int i=1; i<=80; i+= STEP)
                 lists.add(makeList(type, i, STEP));

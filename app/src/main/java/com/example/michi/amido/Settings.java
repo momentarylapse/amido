@@ -12,7 +12,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by michi on 10.01.16.
@@ -31,11 +32,67 @@ public class Settings {
     private boolean adminAllowed;
     private boolean adminEnabled;
     private boolean showKana;
+    private int learnShowCount;
+    private int learnDrawCount;
+
+
+    List<String> learnCountList = new ArrayList<>();
+
+    public List<String> getLearnCountList() {
+        return learnCountList;
+    }
+
+    public int getLearnCountListIndex(int count) {
+        for (String l : learnCountList)
+            if (Integer.valueOf(l) == count)
+                return learnCountList.indexOf(l);
+        return 0;
+    }
 
     private Settings(Context context) {
         this.context = context;
+        learnCountList.add("5");
+        learnCountList.add("10");
+        learnCountList.add("20");
+        learnCountList.add("50");
+
+        reset();
 
         load();
+    }
+
+    private void reset() {
+        adminAllowed = false;
+        adminEnabled = false;
+        showKana = false;
+        learnShowCount = 10;
+        learnDrawCount = 5;
+    }
+
+    public int getLearnDrawCount() {
+        return learnDrawCount;
+    }
+
+    public void setLearnDrawCount(int learnDrawCount) {
+        this.learnDrawCount = learnDrawCount;
+        save();
+    }
+
+    public int getLearnShowCount() {
+        return learnShowCount;
+    }
+
+    public void setLearnShowCount(int learnShowCount) {
+        this.learnShowCount = learnShowCount;
+        save();
+    }
+
+    public int getLearnCount(String method) {
+        if (method.equals("show"))
+            return learnShowCount;
+        if (method.equals("draw"))
+            return learnDrawCount;
+        return 10;
     }
 
     public void load() {
@@ -58,9 +115,16 @@ public class Settings {
                 switch (event) {
                     case XmlPullParser.START_TAG:
                         if (name.equals("settings")) {
-                            adminAllowed = x.getAttributeValue("", "admin-allowed").equals("true");
-                            adminEnabled = x.getAttributeValue("", "admin-enabled").equals("true");
-                            showKana = x.getAttributeValue("", "show-kana").equals("true");
+                            if (x.getAttributeValue("", "admin-allowed") != null)
+                                adminAllowed = x.getAttributeValue("", "admin-allowed").equals("true");
+                            if (x.getAttributeValue("", "admin-enabled") != null)
+                                adminEnabled = x.getAttributeValue("", "admin-enabled").equals("true");
+                            if (x.getAttributeValue("", "show-kana") != null)
+                                showKana = x.getAttributeValue("", "show-kana").equals("true");
+                            if (x.getAttributeValue("", "learn-draw-count") != null)
+                                learnDrawCount = Integer.valueOf(x.getAttributeValue("", "learn-draw-count"));
+                            if (x.getAttributeValue("", "learn-show-count") != null)
+                                learnShowCount = Integer.valueOf(x.getAttributeValue("", "learn-show-count"));
                         }
                         break;
                 }
@@ -87,6 +151,8 @@ public class Settings {
             serializer.attribute("", "admin-allowed", adminAllowed ? "true" : "false");
             serializer.attribute("", "admin-enabled", adminEnabled ? "true" : "false");
             serializer.attribute("", "show-kana", showKana ? "true" : "false");
+            serializer.attribute("", "learn-show-count", "" + learnShowCount);
+            serializer.attribute("", "learn-draw-count", "" + learnDrawCount);
             serializer.endTag(null, "settings");
             serializer.endDocument();
             serializer.flush();

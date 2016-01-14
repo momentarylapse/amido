@@ -14,9 +14,6 @@ import java.util.Date;
 
 public class LearnRangeSelectionActivity extends AppCompatActivity {
 
-    final static int STEP = 20;
-    final static int MAX = 1000;
-
     String type;
     String method;
 
@@ -55,8 +52,10 @@ public class LearnRangeSelectionActivity extends AppCompatActivity {
 
         ProgressTracker pt = ProgressTracker.getInstance(this);
 
+        int step = Settings.getInstance(this).getLearnCount(method);
+
         listManager = ListManager.getInstance(this);
-        lists = listManager.getLists(type, 0);
+        lists = listManager.getLists(type, step, 0);
 
         ArrayAdapter<String> aa = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
         lv.setAdapter(aa);

@@ -49,4 +49,6 @@
     <string name="admin_checkbox">Administratormodus</string>
     <string name="kana_checkbox">Kana zeigen</string>
     <string name="title_activity_settings">Einstellungen</string>
+    <string name="learn_show_count">Zu zeigende Zeichen</string>
+    <string name="learn_draw_count">Abzufragende Zeichen</string>
 </resources>
