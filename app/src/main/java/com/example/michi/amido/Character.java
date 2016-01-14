@@ -1,6 +1,8 @@
 package com.example.michi.amido;
 
 import android.content.Context;
+import android.text.Html;
+import android.text.Spanned;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -109,6 +111,30 @@ public class Character {
         if (context.getResources().getString(R.string.language).equals("de"))
             return german;
         return english;
+    }
+    public String getPronunciation(Context context) {
+        if (Settings.getInstance(context).isShowKana())
+            return KanaRenderer.render(pronunciation);
+        return pronunciation;
+    }
+    public Spanned getNicePronunciation(Context context) {
+        String p = getPronunciation(context);
+        String[] sl = p.split(",|\\|");
+        String r = "";
+        for (String s : sl) {
+            if (s.contains(".")) {
+                String[] ss = s.split("\\.");
+                if (ss.length == 2)
+                    s = "<strong>" + ss[0] + "</strong><small>" + ss[1] + "</small>";
+                else
+                    s = "<small>" + ss[0] + "</small><strong>" + ss[1] + "</strong><small>" + ss[2] + "</small>";
+            }
+            if (r.length() > 0)
+                r = r + ", " + s;
+            else
+                r = s;
+        }
+        return Html.fromHtml(r);
     }
 
     public ArrayList<Stroke> getStrokes() {

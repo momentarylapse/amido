@@ -64,7 +64,7 @@ public class DetailsFragment extends DialogFragment {
         TextView tv = (TextView)view.findViewById(R.id.character);
         tv.setText(c.glyph);
         tv = (TextView)view.findViewById(R.id.pronunciation);
-        tv.setText(c.niceList(c.pronunciation));
+        tv.setText(c.getNicePronunciation(getActivity()));
         tv = (TextView)view.findViewById(R.id.english);
         tv.setText(c.niceList(c.english));
         tv = (TextView)view.findViewById(R.id.german);

@@ -58,7 +58,7 @@ public class LearnShowActivity extends AppCompatActivity {
         TextView tv = (TextView)findViewById(R.id.translation);
         tv.setText(c.niceList(c.getTranslation(this)));
         tv = (TextView)findViewById(R.id.pronunciation);
-        tv.setText(c.niceList(c.pronunciation));
+        tv.setText(c.getNicePronunciation(this));
         updateStatus();
         setMode(Mode.DEMO);
     }
