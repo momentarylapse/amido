@@ -82,6 +82,9 @@ public class LearnShowActivity extends AppCompatActivity {
 
     public void chooseRandom() {
         if (list.size() == 0) {
+            ProgressTracker p = ProgressTracker.getInstance(this);
+            p.add(type, "show", key, 0);
+
             Intent myIntent = new Intent(this, LearnDoneActivity.class);
             startActivity(myIntent);
             return;

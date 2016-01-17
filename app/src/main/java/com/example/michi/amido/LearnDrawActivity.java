@@ -77,7 +77,7 @@ public class LearnDrawActivity extends AppCompatActivity {
     public void chooseRandom() {
         if (list.size() == 0) {
             ProgressTracker p = ProgressTracker.getInstance(this);
-            p.add(type, key, score_sum / all);
+            p.add(type, "draw", key, score_sum / all);
 
             Intent myIntent = new Intent(this, LearnDoneActivity.class);
             startActivity(myIntent);

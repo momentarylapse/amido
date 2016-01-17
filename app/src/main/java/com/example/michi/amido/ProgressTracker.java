@@ -23,17 +23,19 @@ import java.util.Date;
 public class ProgressTracker {
     class Success {
         String type;
+        String method;
         String key;
         float score;
         Date date;
-        public Success(String type, String key, float score) {
+        public Success(String type, String method, String key, float score) {
             this.type = type;
+            this.method = method;
             this.key = key;
             this.score = score;
             this.date = new Date();
         }
         public String toString() {
-            return type + "/" + key + "/" + score + "/" + date.toString();
+            return type + "/" + method + "/" + key + "/" + score + "/" + date.toString();
         }
     }
 
@@ -53,15 +55,15 @@ public class ProgressTracker {
         load();
     }
 
-    public void add(String type, String key, float score) {
-        successes.add(new Success(type, key, score));
+    public void add(String type, String method, String key, float score) {
+        successes.add(new Success(type, method, key, score));
         save();
     }
 
-    public Date getLast(String type, String key) {
+    public Date getLast(String type, String method, String key) {
         Date date = null;
         for (Success s : successes) {
-            if (s.type.equals(type) && s.key.equals(key)) {
+            if (s.type.equals(type) && s.method.equals(method) && s.key.equals(key)) {
                 if (date == null)
                     date = s.date;
                 else if (date.before(s.date))
@@ -71,10 +73,10 @@ public class ProgressTracker {
         return date;
     }
 
-    public float getBest(String type, String key) {
+    public float getBest(String type, String method, String key) {
         float best = 0;
         for (Success s : successes) {
-            if (s.type.equals(type) && s.key.equals(key)) {
+            if (s.type.equals(type) && s.method.equals(method) && s.key.equals(key)) {
                 if (s.score > best)
                     best = s.score;
             }
@@ -98,6 +100,7 @@ public class ProgressTracker {
             for (Success s : successes) {
                 serializer.startTag(null, "success");
                 serializer.attribute("", "type", s.type);
+                serializer.attribute("", "method", s.method);
                 serializer.attribute("", "key", s.key);
                 serializer.attribute("", "date", String.valueOf(s.date.getTime()));
                 serializer.attribute("", "score", String.valueOf(s.score));
@@ -133,8 +136,9 @@ public class ProgressTracker {
                 switch (event) {
                     case XmlPullParser.START_TAG:
                         if (name.equals("success")) {
-                            Success s = new Success("", "", 0);
-                            s.type = "kanji";//x.getAttributeValue(null, "type");
+                            Success s = new Success("", "", "", 0);
+                            s.type = x.getAttributeValue(null, "type");
+                            s.method = x.getAttributeValue(null, "method");
                             s.key = x.getAttributeValue(null, "key");
                             s.score = Float.valueOf(x.getAttributeValue(null, "score"));
                             s.date = new Date(Long.valueOf(x.getAttributeValue(null, "date")));

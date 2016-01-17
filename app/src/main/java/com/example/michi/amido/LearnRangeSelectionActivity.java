@@ -60,7 +60,7 @@ public class LearnRangeSelectionActivity extends AppCompatActivity {
         ArrayAdapter<String> aa = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
         lv.setAdapter(aa);
         for (ListManager.List l : lists) {
-            Date last = pt.getLast(type, l.key);
+            Date last = pt.getLast(type, method, l.key);
             if (last == null)
                 aa.add(l.key);
             else
