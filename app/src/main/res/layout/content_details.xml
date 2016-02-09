@@ -154,18 +154,12 @@
             android:id="@+id/view2"
             android:layout_column="1" />
 
-        <!--Button
+        <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/button_add_to_list"
-            android:id="@+id/button_add_to_list" /-->
-
-        <!--Button
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/button_ok"
-            style="?android:attr/borderlessButtonStyle"
-            android:id="@+id/button_ok" /-->
+            android:onClick="onAddToListButton"
+            android:id="@+id/button_add_to_list" />
 
     </LinearLayout>
 </RelativeLayout>

@@ -122,7 +122,6 @@ public class ListManager {
                 serializer.attribute("", "type", l.type);
                 serializer.attribute("", "key", l.key);
                 serializer.attribute("", "ids", Arrays.toString(l.ids.toArray()));
-                Toast.makeText(context, Arrays.toString(l.ids.toArray()), Toast.LENGTH_SHORT).show();
                 serializer.endTag(null, "list");
             }
             serializer.endDocument();
@@ -136,11 +135,23 @@ public class ListManager {
 
     public void addToUserList(String type, String key, int id) {
         List list = null;
+
+        // list already exists?
         for (List l : userLists)
             if (l.type.equals(type) && l.key.equals(key))
                 list = l;
-        if (list == null)
+
+        // new list
+        if (list == null) {
             list = new List(type, key);
+            userLists.add(list);
+        }
+
+        // already in list?
+        for (int _id : list.ids)
+            if (_id == id)
+                return;
+
         list.ids.add(id);
         save();
     }
@@ -156,9 +167,10 @@ public class ListManager {
 
     public ArrayList<List> getUserLists(String type) {
         ArrayList<List> lists = new ArrayList<>();
-        for (List l : userLists)
+        for (List l : userLists) {
             if (l.type.equals(type))
                 lists.add(l);
+        }
         return lists;
     }
 
