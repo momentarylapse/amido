@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.michi.amido">
+<manifest package="com.example.michi.amido"
+          xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application
         android:allowBackup="true"
@@ -12,20 +12,20 @@
             android:name=".SearchActivity"
             android:label="@string/title_activity_search"
             android:parentActivityName=".DrawActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".LearnActivity"
             android:label="@string/title_activity_learn"
             android:parentActivityName=".DrawActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".DrawActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
         <!--
@@ -34,7 +34,7 @@
         -->
         <meta-data
             android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
+            android:value="@integer/google_play_services_version"/>
 
         <activity
             android:name=".LearnRangeSelectionActivity"
@@ -43,7 +43,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.michi.amido.LearnActivity" />
+                android:value="com.example.michi.amido.LearnActivity"/>
         </activity>
         <activity
             android:name=".LearnDrawActivity"
@@ -52,21 +52,12 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.michi.amido.LearnActivity" />
-        </activity>
-        <activity
-            android:name=".LearnDoneActivity"
-            android:label="@string/title_activity_learn_done"
-            android:parentActivityName=".LearnActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.michi.amido.DrawActivity" />
+                android:value="com.example.michi.amido.LearnActivity"/>
         </activity>
         <activity
             android:name=".LearnShowActivity"
             android:label="@string/title_activity_learn_show"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"
@@ -74,7 +65,12 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.michi.amido.DrawActivity" />
+                android:value="com.example.michi.amido.DrawActivity"/>
+        </activity>
+        <activity
+            android:name=".DetailsActivity"
+            android:label="@string/title_activity_details"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
     </application>
 

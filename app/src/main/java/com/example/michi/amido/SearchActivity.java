@@ -46,8 +46,7 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
     }
 
     public void showDetails(Character c) {
-        DialogFragment f = DetailsFragment.newInstance(c);
-        f.show(getFragmentManager(), "");
+        DetailsActivity.start(this, c);
     }
 
     @Override

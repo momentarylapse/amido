@@ -85,8 +85,7 @@ public class LearnShowActivity extends AppCompatActivity {
             ProgressTracker p = ProgressTracker.getInstance(this);
             p.add(type, "show", key, 0);
 
-            Intent myIntent = new Intent(this, LearnDoneActivity.class);
-            startActivity(myIntent);
+            setContentView(R.layout.activity_learn_done);
             return;
         }
         Random r = new Random();

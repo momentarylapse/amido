@@ -1,6 +1,7 @@
 package com.example.michi.amido;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -66,6 +67,8 @@ public class LearnRangeSelectionActivity extends AppCompatActivity {
             else
                 aa.add(l.key + "       (" + pt.niceDate(last) + ")");
         }
+        /*for (int i=0;i<5; i++)
+            lv.getChildAt(i).setBackgroundColor(Color.BLUE);*/
     }
 
 }

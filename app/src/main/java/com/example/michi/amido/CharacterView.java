@@ -132,10 +132,9 @@ public class CharacterView extends View {
                 break;
             }*/
             case MotionEvent.ACTION_UP: {
-                if (cur_stroke.points.size() > 2) {
+                if (cur_stroke.points.size() > 2)
                     strokes.add(cur_stroke);
-                    cur_stroke = new Stroke();
-                }
+                cur_stroke = new Stroke();
                 break;
             }
             /*case MotionEvent.ACTION_POINTER_UP: {
@@ -233,7 +232,7 @@ public class CharacterView extends View {
 
         } else {
             for (Stroke s : strokes)
-                drawStroke(canvas, s, strokePaint);
+                drawStroke(canvas, s, autoClear ? strokePaintBack : strokePaint);
             drawStroke(canvas, cur_stroke, curStrokePaint);
         }
 

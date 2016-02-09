@@ -79,8 +79,8 @@ public class LearnDrawActivity extends AppCompatActivity {
             ProgressTracker p = ProgressTracker.getInstance(this);
             p.add(type, "draw", key, score_sum / all);
 
-            Intent myIntent = new Intent(this, LearnDoneActivity.class);
-            startActivity(myIntent);
+
+            setContentView(R.layout.activity_learn_done);
             return;
         }
         Random r = new Random();
@@ -118,8 +118,7 @@ public class LearnDrawActivity extends AppCompatActivity {
     }
 
     public void onShowLastCharacterButton(View v) {
-        DialogFragment f = DetailsFragment.newInstance(lastCharacter);
-        f.show(getFragmentManager(), "");
+        DetailsActivity.start(this, lastCharacter);
     }
 
 }

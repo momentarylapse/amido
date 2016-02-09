@@ -25,19 +25,6 @@ import java.io.IOException;
 
 public class DrawActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
-    /*@Override
-    protected void onCreate(Bundle savedInstanceState) {
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-    }*/
-
     private CharacterDatabase db;
     private CharacterDatabase.Answer answer_list;
     CharacterView characterView;
@@ -67,8 +54,7 @@ public class DrawActivity extends AppCompatActivity implements SearchView.OnQuer
     }
 
     public void showDetails(Character c) {
-        DialogFragment f = DetailsFragment.newInstance(c);
-        f.show(getFragmentManager(), "");
+        DetailsActivity.start(this, c);
     }
 
     @Override
