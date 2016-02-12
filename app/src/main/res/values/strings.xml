@@ -54,4 +54,7 @@
     <string name="admin_checkbox">Administrator mode</string>
     <string name="learn_show_count">Characters to teach</string>
     <string name="learn_draw_count">Characters to draw</string>
+    <string name="learn_question_quit">Do you really want to quit?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>

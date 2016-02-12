@@ -1,6 +1,8 @@
 package com.example.michi.amido;
 
+import android.app.AlertDialog;
 import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -38,7 +40,7 @@ public class LearnDrawActivity extends AppCompatActivity {
         setContentView(R.layout.activity_learn_draw);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         characterView = (CharacterView) findViewById(R.id.view);
 
@@ -57,6 +59,29 @@ public class LearnDrawActivity extends AppCompatActivity {
         b.setVisibility(View.INVISIBLE);
 
         chooseRandom();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (list.size() == 0) {
+            finish();
+            return;
+        }
+
+        // not finished? -> ask
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which){
+                    case DialogInterface.BUTTON_POSITIVE:
+                        finish();
+                }
+            }
+        };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(getResources().getString(R.string.learn_question_quit)).setPositiveButton(getResources().getString(R.string.yes), dialogClickListener)
+                .setNegativeButton(getResources().getString(R.string.no), dialogClickListener).show();
     }
 
     public void setCharacter(Character c) {

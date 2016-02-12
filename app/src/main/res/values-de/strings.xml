@@ -51,4 +51,7 @@
     <string name="title_activity_settings">Einstellungen</string>
     <string name="learn_show_count">Zu zeigende Zeichen</string>
     <string name="learn_draw_count">Abzufragende Zeichen</string>
+    <string name="learn_question_quit">Wirklich beenden?</string>
+    <string name="no">Nein</string>
+    <string name="yes">Ja</string>
 </resources>

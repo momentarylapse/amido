@@ -31,6 +31,12 @@ public class LearnRangeSelectionActivity extends AppCompatActivity {
         type = getIntent().getStringExtra("type");
         method = getIntent().getStringExtra("method");
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
         ListView lv = (ListView)findViewById(R.id.range_list);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
