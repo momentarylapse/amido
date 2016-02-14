@@ -38,7 +38,7 @@ public class ListManager {
             this.key = key;
             this.ids = new ArrayList<>();
         }
-        int[] getIds() {
+        public int[] getIds() {
             int[] ids = new int[this.ids.size()];
             for (int i=0; i<ids.length; i++)
                 ids[i] = this.ids.get(i);
@@ -193,5 +193,20 @@ public class ListManager {
         }*/
         return lists;
 
+    }
+
+    public List getList(String type, String key) {
+        for (List l : userLists) {
+            if ((l.type.equals(type)) && (l.key.equals(key)))
+                return l;
+        }
+        String[] r = key.split("-");
+        if (r.length == 2) {
+            int a = Integer.parseInt(r[0]);
+            int b = Integer.parseInt(r[1]);
+            return makeList(type, a, b-a+1);
+        }
+
+        return new List(type, key);
     }
 }

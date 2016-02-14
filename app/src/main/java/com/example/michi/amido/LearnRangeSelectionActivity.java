@@ -55,7 +55,6 @@ public class LearnRangeSelectionActivity extends AppCompatActivity {
                 }
                 myIntent.putExtra("type", type);
                 myIntent.putExtra("method", method);
-                myIntent.putExtra("list", list.getIds());
                 myIntent.putExtra("key", list.key);
                 startActivity(myIntent);
             }
@@ -75,7 +74,7 @@ public class LearnRangeSelectionActivity extends AppCompatActivity {
             if (last == null)
                 aa.add(l.key);
             else
-                aa.add(l.key + "       (" + pt.niceDate(last) + ")");
+                aa.add(String.format("%s       (%s    %.1f)", l.key,pt.niceDate(last), pt.getScore(l, "draw")));
         }
 
         /*for (int i=0;i<5; i++) {

@@ -7,6 +7,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class LearnActivity extends AppCompatActivity {
@@ -19,6 +20,8 @@ public class LearnActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        TextView tv = (TextView)findViewById(R.id.learn_count);
+        tv.setText(String.format(getString(R.string.learn_count), ProgressTracker.getInstance(this).getLearnedCount("kanji", "draw")));
     }
 
     public void onShowButton(View view) {

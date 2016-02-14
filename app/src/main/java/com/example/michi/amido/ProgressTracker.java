@@ -14,6 +14,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -167,8 +168,67 @@ public class ProgressTracker {
         return String.format(context.getResources().getString(R.string.date_days_ago), hours/24);
     }
 
-    public int getLearnedCount(String type) {
+    public float getScore(ListManager.List l, String method) {
+
+        Date now = new Date();
         int count = 0;
-        return count;
+        Date last = null;
+        for (Success s : successes) {
+            if ((!s.type.equals(l.type)) || (!s.key.equals(l.key)) || (!s.method.equals(method)))
+                continue;
+            count ++;
+            if (last != null) {
+                if (last.before(s.date))
+                    last = s.date;
+            } else
+                last = s.date;
+        }
+
+        if (count >= 2) {
+            float days = (now.getTime() - last.getTime()) / (24.0f*60*60*1000);
+
+            return count / days * 5.0f;
+        }
+        return 0;
+    }
+
+    public ArrayList<String> getKeys(String type, String method) {
+        ArrayList<String> keys = new ArrayList<>();
+
+        for (Success s : successes) {
+            if (!s.type.equals(type))
+                continue;
+            if (!s.method.equals(method))
+                continue;
+            boolean found = false;
+            for (String k : keys)
+                if (k.equals(s.key)) {
+                    found = true;
+                    break;
+                }
+            if (!found)
+                keys.add(s.key);
+        }
+        return keys;
+    }
+
+    public int getLearnedCount(String type, String method) {
+        float[] scores = new float[2000];
+        ListManager lm = ListManager.getInstance(context);
+
+        ArrayList<String> keys = getKeys(type, method);
+
+        for (String key : keys) {
+            ListManager.List l = lm.getList(type, key);
+            float score = getScore(l, method);
+            for (int i : l.ids)
+                scores[i] = score;
+        }
+
+        int learned_count = 0;
+        for (float s : scores)
+            if (s >= 1.0)
+                learned_count++;
+        return learned_count;
     }
 }

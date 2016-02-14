@@ -46,8 +46,9 @@ public class LearnShowActivity extends AppCompatActivity {
         type = getIntent().getStringExtra("type");
         key = getIntent().getStringExtra("key");
 
-        int ids[] = getIntent().getIntArrayExtra("list");
-        list = db.get(type, ids);
+        ListManager.List l = ListManager.getInstance(this).getList(type, key);
+        //int ids[] = getIntent().getIntArrayExtra("list");
+        list = db.get(type, l.getIds());
         done = 0;
 
         chooseRandom();

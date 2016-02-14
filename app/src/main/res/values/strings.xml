@@ -57,4 +57,5 @@
     <string name="learn_question_quit">Do you really want to quit?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="learn_count">You\'ve learned %d characters.</string>
 </resources>
