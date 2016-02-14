@@ -3,12 +3,14 @@ package com.example.michi.amido;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -20,6 +22,8 @@ public class LearnRangeSelectionActivity extends AppCompatActivity {
 
     ListManager listManager;
     ArrayList<ListManager.List> lists;
+    //int scrollPos;
+    Parcelable state;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,8 +77,21 @@ public class LearnRangeSelectionActivity extends AppCompatActivity {
             else
                 aa.add(l.key + "       (" + pt.niceDate(last) + ")");
         }
-        /*for (int i=0;i<5; i++)
-            lv.getChildAt(i).setBackgroundColor(Color.BLUE);*/
+
+        /*for (int i=0;i<5; i++) {
+            if (lv.getChildAt(i) != null)
+                lv.getChildAt(i).setBackgroundColor(Color.BLUE);
+        }*/
+
+        if (state != null)
+            lv.onRestoreInstanceState(state);
+    }
+
+    @Override
+    protected void onPause() {
+        ListView lv = (ListView)findViewById(R.id.range_list);
+        state = lv.onSaveInstanceState();
+        super.onPause();
     }
 
 }

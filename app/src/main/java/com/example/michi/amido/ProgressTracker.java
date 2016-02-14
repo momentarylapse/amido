@@ -166,4 +166,9 @@ public class ProgressTracker {
             return String.format(context.getResources().getString(R.string.date_hours_ago), hours);
         return String.format(context.getResources().getString(R.string.date_days_ago), hours/24);
     }
+
+    public int getLearnedCount(String type) {
+        int count = 0;
+        return count;
+    }
 }
