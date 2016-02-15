@@ -7,9 +7,12 @@ import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -22,7 +25,7 @@ public class LearnRangeSelectionActivity extends AppCompatActivity {
 
     ListManager listManager;
     ArrayList<ListManager.List> lists;
-    //int scrollPos;
+    ArrayList<String> listNames;
     Parcelable state;
 
     @Override
@@ -37,11 +40,24 @@ public class LearnRangeSelectionActivity extends AppCompatActivity {
 
     }
 
+    int scoreColor(float score) {
+        if (score == 0.0f)
+            return Color.argb(0xff, 0xff, 0xff, 0xff);
+
+        if (score > 1) {
+            score = Math.min((float)Math.pow(score, 0.3f) + 0.2f, 2.0f);
+            return Color.argb(0xff, (int) (0xff / score), (int) (0xff / score), 0xff);
+        } else {
+            score = Math.max(score - 0.2f, 0.5f);
+            return Color.argb(0xff, 0xff, (int) (0xff * score), (int) (0xff * score));
+        }
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
 
-        ListView lv = (ListView)findViewById(R.id.range_list);
+        final ListView lv = (ListView)findViewById(R.id.range_list);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -60,22 +76,64 @@ public class LearnRangeSelectionActivity extends AppCompatActivity {
             }
         });
 
-        ProgressTracker pt = ProgressTracker.getInstance(this);
+        final ProgressTracker pt = ProgressTracker.getInstance(this);
 
         int step = Settings.getInstance(this).getLearnCount(method);
 
         listManager = ListManager.getInstance(this);
         lists = listManager.getLists(type, step, 0);
 
-        ArrayAdapter<String> aa = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
-        lv.setAdapter(aa);
+        //ArrayAdapter<String> aa = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
+        listNames = new ArrayList<>();
         for (ListManager.List l : lists) {
             Date last = pt.getLast(type, method, l.key);
             if (last == null)
-                aa.add(l.key);
+                listNames.add(l.key);
             else
-                aa.add(String.format("%s       (%s    %.1f)", l.key,pt.niceDate(last), pt.getScore(l, "draw")));
+                //listNames.add(String.format("%s       (%s    %.1f)", l.key, pt.niceDate(last), pt.getScore(l, "draw")));
+                listNames.add(String.format("%s       (%s)", l.key, pt.niceDate(last)));
         }
+        //lv.setAdapter(aa);
+
+        lv.setAdapter(new BaseAdapter()
+        {
+            public View getView(int position, View convertView, ViewGroup parent)
+            {
+                if (convertView == null)
+                {
+                    convertView = new TextView(LearnRangeSelectionActivity.this);
+                    convertView.setPadding(10, 25, 10, 25);
+                    ((TextView)convertView).setTextSize(20);
+                    //((TextView)convertView).setTextColor(Color.WHITE);
+                }
+
+                //if (position == lv.getSelectedItemPosition())
+
+                ListManager.List l = lists.get(position);
+                float score = pt.getScore(l, method);
+                convertView.setBackgroundColor(scoreColor(score));
+                ((TextView) convertView).setText(listNames.get(position));
+
+                return convertView;
+            }
+
+            public long getItemId(int position)
+            {
+                return position;
+            }
+
+            public Object getItem(int position)
+            {
+                return listNames.get(position);
+            }
+
+            public int getCount()
+            {
+                return listNames.size();
+            }
+        });
+
+
 
         /*for (int i=0;i<5; i++) {
             if (lv.getChildAt(i) != null)

@@ -184,7 +184,7 @@ public class ProgressTracker {
                 last = s.date;
         }
 
-        if (count >= 2) {
+        if (count >= 1) {
             float days = (now.getTime() - last.getTime()) / (24.0f*60*60*1000);
 
             return count / days * 5.0f;
