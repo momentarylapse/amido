@@ -148,6 +148,7 @@ public class CharacterDatabase {
                     c.setDigest(_xml.getText());
                 }
                 if ((eventType == XmlPullParser.END_TAG) && (_xml.getName().equals("character"))) {
+                    Log.i("xxxx", c.glyph);
                     characters.add(c);
                 }
                 eventType = _xml.next();
@@ -190,19 +191,26 @@ public class CharacterDatabase {
         return al;
     }
 
-    public Character get(String type, int id) {
+    public Character getSafe(String type, int id) {
+        Character c = getUnsafe(type, id);
+        if (c == null)
+            return dummy_no_character;
+        return c;
+    }
+
+    public Character getUnsafe(String type, int id) {
         makeUsable();
         for (Character c : characters) {
             if ((c.type.equals(type)) && (c.id == id))
                 return c;
         }
-        return dummy_no_character;
+        return null;
     }
 
     public ArrayList<Character> get(String type, int ids[]) {
         ArrayList<Character> list = new ArrayList<>();
         for (int i : ids) {
-            Character c = get(type, i);
+            Character c = getUnsafe(type, i);
             if (c != null)
                 list.add(c);
         }

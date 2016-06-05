@@ -39,7 +39,7 @@ public class DetailsActivity extends AppCompatActivity {
 
         CharacterDatabase db = CharacterDatabase.getInstance(this);
 
-        character = db.get(type, char_id);
+        character = db.getSafe(type, char_id);
 
         TextView tv = (TextView) findViewById(R.id.character);
         tv.setText(character.glyph);

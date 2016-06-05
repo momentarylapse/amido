@@ -27,6 +27,14 @@ public class KanaRenderer {
 
     private KanaRenderer() {
         syllables = new ArrayList<>();
+        add("った", "tta");
+        add("って", "tte");
+        add("っと", "tto");
+        add("っぱ", "ppa");
+        add("っぴ", "ppi");
+        add("っぷ", "ppu");
+        add("っぺ", "ppe");
+        add("っぽ", "ppo");
         add("きゃ", "kya");
         add("きゅ", "kyu");
         add("きょ", "kyo");
@@ -254,8 +262,6 @@ public class KanaRenderer {
                     syllables.set(i, syllables.get(j));
                     syllables.set(j, t);
                 }
-        for (Syllable s : syllables)
-            Log.w("xxx", s.roma);
     }
 
     public static String render(String in) {
