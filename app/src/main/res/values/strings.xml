@@ -37,6 +37,7 @@
     <string name="learn_done">Congratulations, you\'re done!</string>
     <string name="title_activity_learn_done">Done</string>
     <string name="title_activity_learn_show">Teaching</string>
+    <string name="title_activity_learn_flash">Flash</string>
     <string name="language">en</string>
     <string name="search_nothing">No characters found matching \"%s\".</string>
     <string name="draw_nothing">Does not match any character.</string>
@@ -58,4 +59,5 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="learn_count">You\'ve learned %d characters.</string>
+    <string name="button_learn_flash">Flash</string>
 </resources>

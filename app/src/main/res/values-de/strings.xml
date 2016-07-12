@@ -55,4 +55,6 @@
     <string name="no">Nein</string>
     <string name="yes">Ja</string>
     <string name="learn_count">Du hast %d Zeichen gelernt.</string>
+    <string name="button_learn_flash">Flash</string>
+    <string name="title_activity_learn_flash">Flash</string>
 </resources>

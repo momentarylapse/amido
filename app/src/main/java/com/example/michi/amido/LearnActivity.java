@@ -37,4 +37,11 @@ public class LearnActivity extends AppCompatActivity {
         myIntent.putExtra("method", "draw");
         startActivity(myIntent);
     }
+
+    public void onFlashButton(View view) {
+        Intent myIntent = new Intent(LearnActivity.this, LearnRangeSelectionActivity.class);
+        myIntent.putExtra("type", "kanji");
+        myIntent.putExtra("method", "flash");
+        startActivity(myIntent);
+    }
 }

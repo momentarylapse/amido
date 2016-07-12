@@ -66,8 +66,10 @@ public class LearnRangeSelectionActivity extends AppCompatActivity {
                 Intent myIntent;
                 if (method.equals("draw")) {
                     myIntent = new Intent(LearnRangeSelectionActivity.this, LearnDrawActivity.class);
-                } else {
+                } else if (method.equals("show")) {
                     myIntent = new Intent(LearnRangeSelectionActivity.this, LearnShowActivity.class);
+                } else /*if (method.equals("flash"))*/ {
+                    myIntent = new Intent(LearnRangeSelectionActivity.this, LearnFlashActivity.class);
                 }
                 myIntent.putExtra("type", type);
                 myIntent.putExtra("method", method);

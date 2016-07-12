@@ -148,7 +148,7 @@ public class CharacterDatabase {
                     c.setDigest(_xml.getText());
                 }
                 if ((eventType == XmlPullParser.END_TAG) && (_xml.getName().equals("character"))) {
-                    Log.i("xxxx", c.glyph);
+                    //Log.i("xxxx", c.glyph);
                     characters.add(c);
                 }
                 eventType = _xml.next();

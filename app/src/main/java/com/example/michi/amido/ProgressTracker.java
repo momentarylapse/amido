@@ -174,7 +174,7 @@ public class ProgressTracker {
         int count = 0;
         Date last = null;
         for (Success s : successes) {
-            if ((!s.type.equals(l.type)) || (!s.key.equals(l.key)) || (!s.method.equals(method)))
+            if ((!s.type.equals(l.type)) || (!s.key.equals(l.key)) /*|| (!s.method.equals(method))*/)
                 continue;
             count ++;
             if (last != null) {

@@ -90,7 +90,7 @@ public class Settings {
     public int getLearnCount(String method) {
         if (method.equals("show"))
             return learnShowCount;
-        if (method.equals("draw"))
+        if ((method.equals("draw")) || (method.equals("flash")))
             return learnDrawCount;
         return 10;
     }
