@@ -34,6 +34,7 @@ public class Settings {
     private boolean showKana;
     private int learnShowCount;
     private int learnDrawCount;
+    private String userName;
 
 
     List<String> learnCountList = new ArrayList<>();
@@ -67,6 +68,7 @@ public class Settings {
         showKana = false;
         learnShowCount = 10;
         learnDrawCount = 5;
+        userName = "";
     }
 
     public int getLearnDrawCount() {
@@ -119,6 +121,8 @@ public class Settings {
                                 adminAllowed = x.getAttributeValue("", "admin-allowed").equals("true");
                             if (x.getAttributeValue("", "admin-enabled") != null)
                                 adminEnabled = x.getAttributeValue("", "admin-enabled").equals("true");
+                            if (x.getAttributeValue("", "user-name") != null)
+                                userName = x.getAttributeValue("", "user-name");
                             if (x.getAttributeValue("", "show-kana") != null)
                                 showKana = x.getAttributeValue("", "show-kana").equals("true");
                             if (x.getAttributeValue("", "learn-draw-count") != null)
@@ -150,6 +154,7 @@ public class Settings {
             serializer.startTag(null, "settings");
             serializer.attribute("", "admin-allowed", adminAllowed ? "true" : "false");
             serializer.attribute("", "admin-enabled", adminEnabled ? "true" : "false");
+            serializer.attribute("", "user-name", userName);
             serializer.attribute("", "show-kana", showKana ? "true" : "false");
             serializer.attribute("", "learn-show-count", "" + learnShowCount);
             serializer.attribute("", "learn-draw-count", "" + learnDrawCount);
@@ -181,6 +186,11 @@ public class Settings {
         save();
     }
 
+    public void setUserName(String userName) {
+        this.userName = userName;
+        save();
+    }
+
     public boolean isAdmin() {
         return adminAllowed && adminEnabled;
     }
@@ -192,6 +202,8 @@ public class Settings {
     public boolean isAdminEnabled() {
         return adminEnabled;
     }
+
+    public String getUserName(){ return userName; }
 
 
 }

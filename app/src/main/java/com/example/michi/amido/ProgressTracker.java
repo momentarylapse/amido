@@ -1,6 +1,7 @@
 package com.example.michi.amido;
 
 import android.content.Context;
+import android.util.Log;
 import android.util.Xml;
 import android.widget.Toast;
 
@@ -16,13 +17,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 
 /**
  * Created by michi on 02.01.16.
  */
-public class ProgressTracker {
-    class Success {
+public class ProgressTracker extends MSyncDatabase<ProgressTracker.Success> {
+    class Success extends MSync.Item {
         String type;
         String method;
         String key;
@@ -35,14 +37,31 @@ public class ProgressTracker {
             this.score = score;
             this.date = new Date();
         }
+
+        public Success(MSync.IndexItem indexItem) {
+            super(indexItem);
+            this.date = new Date();
+        }
         public String toString() {
             return type + "/" + method + "/" + key + "/" + score + "/" + date.toString();
         }
+
+
+        public void setData(String data) {
+            String[] parts = data.split(":");
+            if (parts.length == 5) {
+                type = parts[0];
+                method = parts[1];
+                key = parts[2];
+                score = Float.valueOf(parts[3]);
+                date.setTime(Long.valueOf(parts[4]));
+            }
+        }
+
+        public String getData() {
+            return type + ":" + method + ":" + key + ":" + score + ":" + String.valueOf(date.getTime());
+        }
     }
-
-    ArrayList<Success> successes;
-
-    static Context context;
 
     static ProgressTracker instance;
     public static ProgressTracker getInstance(Context context) {
@@ -52,18 +71,16 @@ public class ProgressTracker {
     }
 
     private ProgressTracker(Context context) {
-        this.context = context;
-        load();
+        super("amido", Settings.getInstance(context).getUserName(), context);
     }
 
     public void add(String type, String method, String key, float score) {
-        successes.add(new Success(type, method, key, score));
-        save();
+        add(new Success(type, method, key, score));
     }
 
     public Date getLast(String type, String method, String key) {
         Date date = null;
-        for (Success s : successes) {
+        for (Success s : list) {
             if (s.type.equals(type) && s.method.equals(method) && s.key.equals(key)) {
                 if (date == null)
                     date = s.date;
@@ -76,7 +93,7 @@ public class ProgressTracker {
 
     public float getBest(String type, String method, String key) {
         float best = 0;
-        for (Success s : successes) {
+        for (Success s : list) {
             if (s.type.equals(type) && s.method.equals(method) && s.key.equals(key)) {
                 if (s.score > best)
                     best = s.score;
@@ -85,7 +102,7 @@ public class ProgressTracker {
         return best;
     }
 
-    public void save() {
+    /*public void save() {
         File file = new File(context.getFilesDir(), "progress.txt");
         if (file.exists())
             file.delete();
@@ -114,10 +131,10 @@ public class ProgressTracker {
         } catch (IOException e) {
             Toast.makeText(context, "progress save error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
-    }
+    }*/
 
-    public void load() {
-        successes = new ArrayList<>();
+    public void loadOld() {
+        list = new ArrayList<>();
 
         File file = new File(context.getFilesDir(), "progress.txt");
         if (!file.exists())
@@ -143,7 +160,7 @@ public class ProgressTracker {
                             s.key = x.getAttributeValue(null, "key");
                             s.score = Float.valueOf(x.getAttributeValue(null, "score"));
                             s.date = new Date(Long.valueOf(x.getAttributeValue(null, "date")));
-                            successes.add(s);
+                            list.add(s);
                             //Toast.makeText(context, s.toString(), Toast.LENGTH_SHORT).show();
                         }
                         break;
@@ -173,7 +190,7 @@ public class ProgressTracker {
         Date now = new Date();
         int count = 0;
         Date last = null;
-        for (Success s : successes) {
+        for (Success s : list) {
             if ((!s.type.equals(l.type)) || (!s.key.equals(l.key)) /*|| (!s.method.equals(method))*/)
                 continue;
             count ++;
@@ -195,7 +212,7 @@ public class ProgressTracker {
     public ArrayList<String> getKeys(String type, String method) {
         ArrayList<String> keys = new ArrayList<>();
 
-        for (Success s : successes) {
+        for (Success s : list) {
             if (!s.type.equals(type))
                 continue;
             if (!s.method.equals(method))
@@ -230,5 +247,9 @@ public class ProgressTracker {
             if (s >= 1.0)
                 learned_count++;
         return learned_count;
+    }
+
+    public Success createItem(MSync.IndexItem item) {
+        return new Success(item);
     }
 }

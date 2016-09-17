@@ -6,6 +6,8 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -51,6 +53,23 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
         s2.setAdapter(adapter);
         s2.setSelection(settings.getLearnCountListIndex(settings.getLearnShowCount()));
         s2.setOnItemSelectedListener(this);
+
+        EditText e = (EditText)findViewById(R.id.edit_user);
+        e.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                settings.setUserName(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+        e.setText(settings.getUserName());
 
     }
 

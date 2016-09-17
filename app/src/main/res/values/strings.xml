@@ -60,4 +60,5 @@
     <string name="no">No</string>
     <string name="learn_count">You\'ve learned %d characters.</string>
     <string name="button_learn_flash">Flash</string>
+    <string name="sync_user_name">User name (for sync)</string>
 </resources>

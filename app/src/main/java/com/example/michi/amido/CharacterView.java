@@ -163,6 +163,7 @@ public class CharacterView extends View {
 
 
     private Paint textPaint = new Paint();
+    private Paint demoGlyphTextPaint = new Paint();
     private Paint strokePaint = new Paint();
     private Paint strokePaintBack = new Paint();
     private Paint curStrokePaint = new Paint();
@@ -172,6 +173,7 @@ public class CharacterView extends View {
     private static final int STROKE_COLOR_BACK = 0xFFa0a0a0;
     private static final int CUR_STROKE_COLOR = 0xFFFF7070;
     private static final int TEXT_COLOR = 0xff909090;
+    private static final int DEMO_GLYPH_TEXT_COLOR = 0xffc0c0c0;
 
     private static final int BACKGROUND_ACTIVE = Color.WHITE;
 
@@ -180,6 +182,7 @@ public class CharacterView extends View {
     private Paint borderPaint = new Paint();
     private float borderWidth;
     private float fontSize;
+    private float demoGlyphfontSize;
 
     /**
      * Sets up the required {@link android.graphics.Paint} objects for the screen density of this
@@ -193,6 +196,10 @@ public class CharacterView extends View {
         fontSize = 15f * density;
         textPaint.setTextSize(fontSize);
         textPaint.setColor(TEXT_COLOR);
+
+        demoGlyphfontSize = fontSize * 4;
+        demoGlyphTextPaint.setTextSize(demoGlyphfontSize);
+        demoGlyphTextPaint.setColor(DEMO_GLYPH_TEXT_COLOR);
 
         borderWidth = BORDER_DP * density;
         borderPaint.setStrokeWidth(borderWidth);
@@ -221,6 +228,7 @@ public class CharacterView extends View {
         canvas.drawRect(borderWidth / 2, borderWidth / 2, getWidth() - borderWidth / 2, getHeight() - borderWidth / 2, borderPaint);
 
         if (animating) {
+            canvas.drawText(demo.glyph, getWidth() - demoGlyphfontSize, demoGlyphfontSize, demoGlyphTextPaint);
             int cur = (int)animationTime;
             float t = min((animationTime - cur) * 1.5f, 1);
             for (int i=cur; i<strokes.size(); i++)

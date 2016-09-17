@@ -1,6 +1,7 @@
 package com.example.michi.amido;
 
 import android.content.Context;
+import android.util.Log;
 import android.util.Xml;
 import android.widget.Toast;
 
