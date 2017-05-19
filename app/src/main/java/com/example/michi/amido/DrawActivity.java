@@ -41,10 +41,6 @@ public class DrawActivity extends AppCompatActivity implements SearchView.OnQuer
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        StrictMode.ThreadPolicy policy = new StrictMode.
-                ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
-
         ListView lv = (ListView) findViewById(R.id.answer_list);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

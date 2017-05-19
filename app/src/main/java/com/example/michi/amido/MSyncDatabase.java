@@ -30,8 +30,27 @@ public abstract class MSyncDatabase<ItemClass extends MSync.Item> {
     String app, user;
     String filename;
 
+    boolean dirty;
+
     List<ItemClass> list;
     List<OnChangeListener> onChangeListeners = new ArrayList<>();
+
+    class SyncThread extends Thread {
+
+        public void run() {
+            while(true) {
+                try {
+                    Thread.sleep(10000);
+                } catch (InterruptedException e) {
+                    //e.printStackTrace();
+                }
+                if (dirty)
+                    sync();
+            }
+
+        }
+    };
+    SyncThread syncThread;
 
     public interface OnChangeListener {
         public void onChange();
@@ -47,12 +66,21 @@ public abstract class MSyncDatabase<ItemClass extends MSync.Item> {
         this.app = app;
         this.user = user;
         this.filename = app + ".xml";
+        dirty = true;
         load();
-        sync();
+        markForSync();
+
+        syncThread = new SyncThread();
+        syncThread.start();
+    }
+
+    public void markForSync() {
+        dirty = true;
         onChange();
     }
 
     public void sync() {
+        Log.w("xxxx", "sync");
         if (user.isEmpty())
             return;
 
@@ -91,6 +119,7 @@ public abstract class MSyncDatabase<ItemClass extends MSync.Item> {
             }
         }
 
+        dirty = false;
         onChange();
     }
 
@@ -120,22 +149,19 @@ public abstract class MSyncDatabase<ItemClass extends MSync.Item> {
     public void add(ItemClass item) {
         list.add(item);
 
-        sync();
-        onChange();
+        markForSync();
     }
 
     public void set(ItemClass item) {
         item.markChanged();
 
-        sync();
-        onChange();
+        markForSync();
     }
 
     public void delete(ItemClass item) {
         item.markDeleted();
 
-        sync();
-        onChange();
+        markForSync();
     }
 
 
