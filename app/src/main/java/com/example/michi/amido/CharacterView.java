@@ -71,16 +71,27 @@ public class CharacterView extends View {
         stopAnimation();
     }
 
+    public void setStrokes(Character c) {
+        editable = true;
+        strokes = c.getStrokes();
+
+        /*for (StrokeDigest s : c.strokes_digest) {
+            strokes.add(s.undigest());
+        }*/
+        invalidate();
+    }
+
+    public ArrayList<Stroke> getStrokes() {
+        return strokes;
+    }
+
     public void setDemo(Character c) {
         clear();
 
+        setStrokes(c);
+
         demo = c;
         editable = false;
-
-        /*for (StrokeDigest s : demo.strokes_digest) {
-            strokes.add(s.undigest());
-        }*/
-        strokes = demo.getStrokes();
 
         postInvalidate();
 
@@ -92,7 +103,7 @@ public class CharacterView extends View {
             TimerTask tt = new TimerTask() {
                 @Override
                 public void run() {
-                    CharacterView.this.animationTime += 0.02f;
+                    CharacterView.this.animationTime += 0.03f;
                     if (CharacterView.this.animationTime > CharacterView.this.strokes.size() + 2)
                         CharacterView.this.animationTime = 0;
                     CharacterView.this.postInvalidate();
@@ -163,6 +174,7 @@ public class CharacterView extends View {
 
 
     private Paint textPaint = new Paint();
+    private Paint numberTextPaint = new Paint();
     private Paint demoGlyphTextPaint = new Paint();
     private Paint strokePaint = new Paint();
     private Paint strokePaintBack = new Paint();
@@ -196,6 +208,9 @@ public class CharacterView extends View {
         fontSize = 15f * density;
         textPaint.setTextSize(fontSize);
         textPaint.setColor(TEXT_COLOR);
+
+        numberTextPaint.setTextSize(fontSize);
+        numberTextPaint.setColor(TEXT_COLOR);
 
         demoGlyphfontSize = fontSize * 4;
         demoGlyphTextPaint.setTextSize(demoGlyphfontSize);
@@ -239,8 +254,10 @@ public class CharacterView extends View {
                 drawStrokePartial(canvas, strokes.get(cur), t, curStrokePaint);
 
         } else {
-            for (Stroke s : strokes)
+            for (Stroke s : strokes) {
                 drawStroke(canvas, s, autoClear ? strokePaintBack : strokePaint);
+                canvas.drawText(String.valueOf(strokes.indexOf(s) + 1), s.points.get(0).x * getWidth() - fontSize, s.points.get(0).y * getHeight() - fontSize, numberTextPaint);
+            }
             drawStroke(canvas, cur_stroke, curStrokePaint);
         }
 

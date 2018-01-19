@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.DialogFragment;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -36,6 +37,22 @@ public class DetailsActivity extends AppCompatActivity {
         char_id = getIntent().getIntExtra("id", 0);
         type = getIntent().getStringExtra("type");
 
+        Settings.getInstance(this).setAdminAllowed(true);
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_edit);
+        if (Settings.getInstance(this).isAdmin()) {
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent myIntent = new Intent(DetailsActivity.this, EditActivity.class);
+                    myIntent.putExtra("type", type);
+                    myIntent.putExtra("id", char_id);
+                    startActivity(myIntent);
+                }
+            });
+        }else{
+           fab.hide();
+        }
 
         CharacterDatabase db = CharacterDatabase.getInstance(this);
 
@@ -49,6 +66,8 @@ public class DetailsActivity extends AppCompatActivity {
         tv.setText(character.niceList(character.english));
         tv = (TextView) findViewById(R.id.german);
         tv.setText(character.niceList(character.german));
+        tv = (TextView) findViewById(R.id.pinyin);
+        tv.setText(character.niceList(character.pinyin));
         tv = (TextView) findViewById(R.id.id);
         tv.setText("" + character.id);
 
@@ -60,5 +79,12 @@ public class DetailsActivity extends AppCompatActivity {
         //this.onBackPressed();
         DialogFragment f = AddToListFragment.newInstance(character);
         f.show(getFragmentManager(), "");
+    }
+
+    public void onEditButton(View view) {
+        Intent myIntent = new Intent(DetailsActivity.this, EditActivity.class);
+        myIntent.putExtra("type", type);
+        myIntent.putExtra("id", char_id);
+        startActivity(myIntent);
     }
 }

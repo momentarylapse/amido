@@ -10,6 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import static java.lang.Math.abs;
 import static java.lang.Math.max;
@@ -23,13 +24,29 @@ public class Character {
     public String type;
     public String glyph;
     public String pronunciation;
+    public String pinyin;
     public String english;
     public String german;
     public int num_strokes;
     public String strokes;
     public ArrayList<StrokeDigest> strokes_digest;
+    public boolean changed;
+
+    public Character() {
+        id = -1;
+        glyph = "?";
+        pronunciation = "?";
+        english = "?";
+        german = "?";
+        pinyin = "?";
+        num_strokes = 0;
+        strokes = "[]";
+        changed = false;
+        strokes_digest = new ArrayList<>();
+    }
+
     //public JSONArray strokes_digest;
-    public void setDigest(String s) {
+    public void setDigestByString(String s) {
         strokes_digest = new ArrayList<>();
         try {
             JSONArray a = new JSONArray(s);
@@ -51,6 +68,26 @@ public class Character {
         } catch (JSONException e) {
             Log.e("xxx", "digest: " + e.getMessage(), e);
         }
+    }
+
+    public String getDigestString() {
+        String r = "[";
+        Locale l = null;
+        boolean first = true;
+        for (StrokeDigest s : strokes_digest){
+            if (!first)
+                r += ",";
+            r += String.format(l, "{\"l\":%.3f,\"w\":[", s.length);
+            for (int i=0; i<s.w.length; i++) {
+                if (i > 0)
+                    r += ",";
+                r += String.format(l, "%.3f", s.w[i]);
+            }
+            r += String.format(l, "],\"dx\":%.3f,\"mx\":%.3f,\"dy\":%.3f,\"my\":%.3f}", s.dx, s.mx, s.dy, s.my);
+            first = false;
+        }
+        r += "]";
+        return r;
     }
 
     public float distance(Character b) {
@@ -152,6 +189,28 @@ public class Character {
             Log.e("xxx", "getStrokes: " + e.getMessage(), e);
         }
         return strokes;
+    }
+
+    public void setStrokes(ArrayList<Stroke> _strokes, ArrayList<StrokeDigest> _digest) {
+        num_strokes = _strokes.size();
+        strokes = "[";
+        boolean firstStroke = true;
+        for (Stroke s: _strokes) {
+            if (!firstStroke)
+                strokes += ",";
+            strokes += "[";
+            boolean first = true;
+            for (Point p: s.points) {
+                if (!first)
+                    strokes += ",";
+                strokes += String.format("%d,%d", (int)(p.x * 1000), (int)(p.y * 1000));
+                first = false;
+            }
+            strokes += "]";
+            firstStroke = false;
+        }
+        strokes += "]";
+        strokes_digest = _digest;
     }
 
 

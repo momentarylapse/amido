@@ -21,7 +21,8 @@ public class LearnActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         TextView tv = (TextView)findViewById(R.id.learn_count);
-        tv.setText(String.format(getString(R.string.learn_count), ProgressTracker.getInstance(this).getLearnedCount("kanji", "draw")));
+        if (!tv.isInEditMode())
+            tv.setText(String.format(getString(R.string.learn_count), ProgressTracker.getInstance(this).getLearnedCount("kanji", "draw")));
     }
 
     public void onShowButton(View view) {

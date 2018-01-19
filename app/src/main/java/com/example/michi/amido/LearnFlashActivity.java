@@ -98,4 +98,8 @@ public class LearnFlashActivity extends AppCompatActivity {
         chooseRandom();
     }
 
+    public void onNoButton(View b) {
+        chooseRandom();
+    }
+
 }

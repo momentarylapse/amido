@@ -9,6 +9,7 @@
     <string name="details_english">Englisch</string>
     <string name="details_german">Deutsch</string>
     <string name="details_pronunciation">Aussprache</string>
+    <string name="details_pinyin">Pinyin</string>
     <string name="draw_clear">Löschen</string>
     <string name="draw_ok">Ok</string>
     <string name="search_answer_format">%1$s - %2$s</string>
@@ -26,6 +27,7 @@
     <string name="button_learn_show">Brings mir bei!</string>
     <string name="title_activity_learn_range_selection">Bereich</string>
     <string name="pronunciation">Aussprache</string>
+    <string name="pinyin">Pinyin</string>
     <string name="translation">Übersetzung</string>
     <string name="title_activity_learn_draw">Lernen / Malen</string>
     <string name="learn_draw_correct">richtig - %1$s - %2$s</string>
@@ -57,4 +59,7 @@
     <string name="learn_count">Du hast %d Zeichen gelernt.</string>
     <string name="button_learn_flash">Flash</string>
     <string name="title_activity_learn_flash">Flash</string>
+    <string name="action_list">Zeichenliste</string>
+    <string name="button_edit">Bearbeiten</string>
+    <string name="title_activity_edit">Bearbeiten</string>
 </resources>

@@ -79,6 +79,10 @@ public class DrawActivity extends AppCompatActivity implements SearchView.OnQuer
             Intent myIntent = new Intent(DrawActivity.this, SettingsActivity.class);
             startActivity(myIntent);
             return true;
+        } else if (id == R.id.action_list) {
+            Intent myIntent = new Intent(DrawActivity.this, ListActivity.class);
+            startActivity(myIntent);
+            return true;
         } else if (id == R.id.action_learn) {
             Intent myIntent = new Intent(DrawActivity.this, LearnActivity.class);
             startActivity(myIntent);

@@ -81,6 +81,31 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/details_pinyin"
+                    android:id="@+id/textView4"
+                    android:layout_column="0"
+                    android:textStyle="bold"
+                    android:layout_marginRight="10dp"
+                    android:textSize="@dimen/abc_text_size_medium_material" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="New Text"
+                    android:id="@+id/pinyin"
+                    android:layout_column="1"
+                    android:textSize="@dimen/abc_text_size_medium_material"
+                    android:breakStrategy="balanced" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
                     android:text="@string/details_id"
                     android:id="@+id/textView13"
                     android:layout_column="0"
@@ -160,6 +185,13 @@
             android:text="@string/button_add_to_list"
             android:onClick="onAddToListButton"
             android:id="@+id/button_add_to_list" />
-
     </LinearLayout>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@android:drawable/ic_menu_edit"/>
 </RelativeLayout>
+
