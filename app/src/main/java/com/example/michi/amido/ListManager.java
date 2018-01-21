@@ -177,7 +177,7 @@ public class ListManager {
 
     public ArrayList<List> getLists(String type, int step, int year) {
         ArrayList<List> lists = getUserLists(type);//new ArrayList<>();
-        for (int i=1; i<=1000; i+= step)
+        for (int i=1; i<=1900; i+= step)
             lists.add(makeList(type, i, step));
         /*if (year == 1) {
             for (int i=1; i<=80; i+= STEP)

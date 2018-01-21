@@ -1,11 +1,7 @@
 package com.example.michi.amido;
 
-import android.app.DialogFragment;
-import android.app.Fragment;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -18,10 +14,7 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import com.example.michi.amido.data.Character;
 
 
 public class DrawActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {

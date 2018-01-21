@@ -10,6 +10,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.michi.amido.data.Character;
+
 public class DetailsActivity extends AppCompatActivity {
 
 

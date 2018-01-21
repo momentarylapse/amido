@@ -2,13 +2,17 @@ package com.example.michi.amido;
 
 import android.content.Context;
 import android.content.res.XmlResourceParser;
+import android.os.Environment;
 import android.util.Log;
 import android.util.Xml;
 import android.widget.Toast;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.example.michi.amido.data.BoundingBox;
+import com.example.michi.amido.data.Character;
+import com.example.michi.amido.data.Digest;
+import com.example.michi.amido.data.Stroke;
+import com.example.michi.amido.data.StrokeDigest;
+
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -18,7 +22,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -26,7 +29,6 @@ import java.util.TimerTask;
 import static java.lang.Math.abs;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
-import static java.lang.Math.pow;
 
 /**
  * Created by michi on 09.11.15.
@@ -155,10 +157,10 @@ public class CharacterDatabase {
                 if ((event == XmlPullParser.START_TAG) && (_xml.getName().equals("character"))) {
                     c = new Character();
                     //c.type = "kanji";
-                    c.id = Integer.valueOf(_xml.getAttributeValue(null, "tuttle"));
+                    c.id = Integer.valueOf(_xml.getAttributeValue(null, "id"));
                     c.glyph = _xml.getAttributeValue(null, "glyph");
                     c.type = _xml.getAttributeValue(null, "type");
-                    c.pronunciation = _xml.getAttributeValue(null, "pronunciation");
+                    c.pronunciation = _xml.getAttributeValue(null, "japanese");
                     if (c.pronunciation == null)
                         c.pronunciation = "";
                     c.pinyin = _xml.getAttributeValue(null, "pinyin");
@@ -170,9 +172,6 @@ public class CharacterDatabase {
                     c.german = _xml.getAttributeValue(null, "german");
                     if (c.german == null)
                         c.german = "";
-                    String ss = _xml.getAttributeValue(null, "stroke_count");
-                    if (ss != null)
-                        c.num_strokes = Integer.valueOf(ss);
                     c.strokes = _xml.getAttributeValue(null, "strokes");
                     if (c.strokes == null)
                         c.strokes = "[]";
@@ -190,9 +189,9 @@ public class CharacterDatabase {
                             cc.english = c.english;
                             cc.german = c.german;
                             cc.pinyin = c.pinyin;
-                            cc.num_strokes = c.num_strokes;
                             cc.strokes = c.strokes;
-                            cc.strokes_digest = c.strokes_digest;
+                            cc.digest = c.digest;
+                            cc.changed = true;
                             Log.i("xxx", cc.strokes);
                             Log.i("xxx", cc.getDigestString());
                         }
@@ -223,9 +222,9 @@ public class CharacterDatabase {
                 if ((eventType == XmlPullParser.START_TAG) && (_xml.getName().equals("character"))) {
                     c = new Character();
                     c.type = "kanji";
-                    c.id = _xml.getAttributeIntValue(null, "tuttle", 0);
+                    c.id = _xml.getAttributeIntValue(null, "id", 0);
                     c.glyph = _xml.getAttributeValue(null, "glyph");
-                    c.pronunciation = _xml.getAttributeValue(null, "pronunciation");
+                    c.pronunciation = _xml.getAttributeValue(null, "japanese");
                     if (c.pronunciation == null)
                         c.pronunciation = "";
                     c.pinyin = _xml.getAttributeValue(null, "pinyin");
@@ -237,7 +236,6 @@ public class CharacterDatabase {
                     c.german = _xml.getAttributeValue(null, "german");
                     if (c.german == null)
                         c.german = "";
-                    c.num_strokes = _xml.getAttributeIntValue(null, "stroke_count", 0);
                     c.strokes = _xml.getAttributeValue(null, "strokes");
                 }
                 if (eventType == XmlPullParser.TEXT) {
@@ -262,9 +260,12 @@ public class CharacterDatabase {
         state = State.LOADED;
     }
 
-    public void save() {
+    public File extraFile() {
+        return new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "characters2.xml");
+        //return new File(context.getFilesDir(), "characters2.xml");
+    }
 
-        File file = new File(context.getFilesDir(), "characters2.xml");
+    public void save(File file) {
         if (file.exists())
             file.delete();
 
@@ -282,12 +283,12 @@ public class CharacterDatabase {
                     serializer.startTag(null, "character");
                     serializer.attribute("", "type", c.type);
                     serializer.attribute("", "glyph", c.glyph);
-                    serializer.attribute("", "tuttle", String.valueOf(c.id));
-                    serializer.attribute("", "pronunciation", c.pronunciation);
+                    serializer.attribute("", "id", String.valueOf(c.id));
+                    serializer.attribute("", "japanese", c.pronunciation);
                     serializer.attribute("", "english", c.english);
                     serializer.attribute("", "german", c.german);
                     serializer.attribute("", "pinyin", c.pinyin);
-                    serializer.attribute("", "stroke_count", String.valueOf(c.num_strokes));
+                    serializer.attribute("", "stroke_count", String.valueOf(c.digest.num_strokes()));
                     serializer.attribute("", "strokes", c.strokes);
                     serializer.text(c.getDigestString());
                     Log.i("xxx", c.strokes);
@@ -300,17 +301,19 @@ public class CharacterDatabase {
             serializer.endDocument();
             serializer.flush();
             stream.close();
+
+
         } catch (IOException e) {
             Toast.makeText(context, "characterdb save error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
-    public Answer find(Character digest) {
+    public Answer find(Digest digest) {
         makeUsable();
         Answer al = new Answer(new AnswerItem(dummy_no_character, 0));
 
         for (Character c : characters) {
-            float score = c.score(digest);
+            float score = c.digest.score(digest);
             if (score > 0)
                 al.append(new AnswerItem(c, score));
         }
@@ -355,27 +358,6 @@ public class CharacterDatabase {
                 list.add(c);
         }
         return list;
-    }
-
-    public static ArrayList<StrokeDigest> digestStrokes(ArrayList<Stroke> strokes) {
-        BoundingBox box = new BoundingBox();
-        for (Stroke s : strokes) {
-            box.add(s.getBoundingBox());
-        }
-        box = box.square();
-
-        ArrayList<StrokeDigest> strokes_digest = new ArrayList<>();
-        for (Stroke s : strokes) {
-            strokes_digest.add(s.digest(box));
-        }
-        return strokes_digest;
-    }
-
-    public static Character digest(ArrayList<Stroke> strokes) {
-        Character c = new Character();
-        c.num_strokes = strokes.size();
-        c.strokes_digest = digestStrokes(strokes);
-        return c;
     }
 }
 

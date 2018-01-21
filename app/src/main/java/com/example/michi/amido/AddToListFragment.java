@@ -2,8 +2,6 @@ package com.example.michi.amido;
 
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -16,10 +14,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
+import com.example.michi.amido.data.Character;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
 /**

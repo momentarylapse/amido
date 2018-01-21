@@ -24,8 +24,12 @@ import android.graphics.Path;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Toast;
 
+
+import com.example.michi.amido.data.Character;
+import com.example.michi.amido.data.Digest;
+import com.example.michi.amido.data.Point;
+import com.example.michi.amido.data.Stroke;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -324,8 +328,8 @@ public class CharacterView extends View {
         this.invalidate();
     }
 
-    public Character getDigest() {
-        return CharacterDatabase.digest(strokes);
+    public Digest getDigest() {
+        return Digest.digest(strokes);
     }
 
 

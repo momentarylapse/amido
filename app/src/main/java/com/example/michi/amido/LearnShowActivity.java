@@ -1,16 +1,14 @@
 package com.example.michi.amido;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.michi.amido.data.Character;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -106,7 +104,7 @@ public class LearnShowActivity extends AppCompatActivity {
             setMode(Mode.USER);
             return;
         }
-        float score = curCharacter.score(characterView.getDigest());
+        float score = curCharacter.digest.score(characterView.getDigest());
         if (score > 0) {
             Toast.makeText(this, String.format(getResources().getString(R.string.learn_draw_correct), curCharacter.glyph, CharacterDatabase.scoreToString(score)), Toast.LENGTH_SHORT).show();
             list.remove(curCharacter);

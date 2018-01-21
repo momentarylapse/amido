@@ -1,10 +1,8 @@
 package com.example.michi.amido;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -12,6 +10,11 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.michi.amido.data.Character;
+import com.example.michi.amido.data.Digest;
+import com.example.michi.amido.data.Stroke;
+
+import java.io.File;
 import java.util.ArrayList;
 
 public class EditActivity extends AppCompatActivity {
@@ -48,11 +51,12 @@ public class EditActivity extends AppCompatActivity {
 
                 Log.i("xxx", character.strokes);
                 ArrayList<Stroke> strokes = characterView.getStrokes();
-                character.setStrokes(strokes, CharacterDatabase.digestStrokes(strokes));
+                character.setStrokes(strokes, Digest.digest(strokes));
                 Log.i("xxx", character.strokes);
 
                 character.changed = true;
-                CharacterDatabase.getInstance(EditActivity.this).save();
+                CharacterDatabase db = CharacterDatabase.getInstance(EditActivity.this);
+                db.save(db.extraFile());
                 //EditActivity.this.onBackPressed();
             }
         });
