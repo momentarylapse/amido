@@ -14,8 +14,8 @@ import java.util.Random;
 public class LearnFlashActivity extends AppCompatActivity {
     CharacterView characterView;
 
-    ArrayList<Character> list;
-    Character curCharacter;
+    ArrayList<Character> list = null;
+    Character curCharacter = null;
     int done;
 
     String type;
@@ -36,12 +36,14 @@ public class LearnFlashActivity extends AppCompatActivity {
         type = getIntent().getStringExtra("type");
         key = getIntent().getStringExtra("key");
 
-        ListManager.List l = ListManager.getInstance(this).getList(type, key);
-        //int ids[] = getIntent().getIntArrayExtra("list");
-        list = db.get(type, l.getIds());
-        done = 0;
+        if (list == null) {
+            ListManager.List l = ListManager.getInstance(this).getList(type, key);
+            //int ids[] = getIntent().getIntArrayExtra("list");
+            list = db.get(type, l.getIds());
+            done = 0;
 
-        chooseRandom();
+            chooseRandom();
+        }
     }
 
     public void setCharacter(Character c) {

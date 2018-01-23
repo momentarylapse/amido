@@ -128,9 +128,11 @@ public class CharacterDatabase {
     public void loadExtra() {
 
         Log.i("xxx", "extra?");
-        File file = new File(context.getFilesDir(), "characters2.xml");
+        File file = extraFile();//new File(context.getFilesDir(), "characters2.xml");
         if (!file.exists())
             return;
+        //if (file.delete())
+        //    return;
         Log.i("xxx", "extra!!!!!!!!!!!!!!!");
 
         try {

@@ -75,6 +75,7 @@ public class DetailsActivity extends AppCompatActivity {
 
         characterView = (CharacterView) findViewById(R.id.view2);
         characterView.setDemo(character);
+        //characterView.startAnimation();
     }
 
     public void onAddToListButton(View view) {

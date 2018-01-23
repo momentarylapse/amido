@@ -51,12 +51,19 @@ public class CharacterView extends View {
     private Stroke cur_stroke = new Stroke();
     private Character demo = null;
 
-    boolean editable = true;
-    boolean animating = false;
+    //boolean editable = true;
+    //boolean animating = false;
     Timer animationTimer = null;
     float animationTime;
 
     boolean autoClear = false;
+
+    enum Mode{
+        DRAW,
+        DEMO,
+        DEMO_ANIMATED
+    };
+    Mode mode = Mode.DRAW;
 
     public CharacterView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -68,7 +75,24 @@ public class CharacterView extends View {
         if (animationTimer != null)
             animationTimer.cancel();
         animationTimer = null;
-        animating = false;
+        //animating = false;
+        mode = Mode.DEMO; // ?
+    }
+
+    public void startAnimation() {
+        mode = Mode.DEMO_ANIMATED;
+        animationTime = 0;
+        animationTimer = new Timer();
+        TimerTask tt = new TimerTask() {
+            @Override
+            public void run() {
+                CharacterView.this.animationTime += 0.03f;
+                if (CharacterView.this.animationTime > CharacterView.this.strokes.size() + 2)
+                    CharacterView.this.animationTime = 0;
+                CharacterView.this.postInvalidate();
+            }
+        };
+        animationTimer.schedule(tt, 0, 20);
     }
 
     public void close() {
@@ -76,7 +100,7 @@ public class CharacterView extends View {
     }
 
     public void setStrokes(Character c) {
-        editable = true;
+        mode = Mode.DRAW;
         strokes = c.getStrokes();
 
         /*for (StrokeDigest s : c.strokes_digest) {
@@ -95,26 +119,14 @@ public class CharacterView extends View {
         setStrokes(c);
 
         demo = c;
-        editable = false;
+        mode = Mode.DEMO;
 
         postInvalidate();
 
 
-        animationTime = 0;
-        if (!animating) {
-            animating = true;
-            animationTimer = new Timer();
-            TimerTask tt = new TimerTask() {
-                @Override
-                public void run() {
-                    CharacterView.this.animationTime += 0.03f;
-                    if (CharacterView.this.animationTime > CharacterView.this.strokes.size() + 2)
-                        CharacterView.this.animationTime = 0;
-                    CharacterView.this.postInvalidate();
-                }
-            };
-            animationTimer.schedule(tt, 0, 20);
-        }
+        /*if (mode != Mode.DEMO_ANIMATED) {
+            startAnimation();
+        }*/
     }
 
     public Point event2point(MotionEvent event, int index) {
@@ -124,10 +136,19 @@ public class CharacterView extends View {
     // BEGIN_INCLUDE(onTouchEvent)
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (!editable)
-            return true;
-
         final int action = event.getAction();
+
+        if (mode == Mode.DEMO){
+            if ((action & MotionEvent.ACTION_MASK) == MotionEvent.ACTION_DOWN)
+                startAnimation();
+            return true;
+        }
+        if (mode == Mode.DEMO_ANIMATED){
+            if ((action & MotionEvent.ACTION_MASK) == MotionEvent.ACTION_DOWN)
+                stopAnimation();
+            return true;
+        }
+
 
         switch (action & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_DOWN: {
@@ -180,6 +201,7 @@ public class CharacterView extends View {
     private Paint textPaint = new Paint();
     private Paint numberTextPaint = new Paint();
     private Paint demoGlyphTextPaint = new Paint();
+    private Paint demoGlyphTextPaintLarge = new Paint();
     private Paint strokePaint = new Paint();
     private Paint strokePaintBack = new Paint();
     private Paint curStrokePaint = new Paint();
@@ -220,6 +242,9 @@ public class CharacterView extends View {
         demoGlyphTextPaint.setTextSize(demoGlyphfontSize);
         demoGlyphTextPaint.setColor(DEMO_GLYPH_TEXT_COLOR);
 
+        demoGlyphTextPaintLarge.setTextSize(getHeight() * 0.8f);
+        demoGlyphTextPaintLarge.setColor(DEMO_GLYPH_TEXT_COLOR);
+
         borderWidth = BORDER_DP * density;
         borderPaint.setStrokeWidth(borderWidth);
         borderPaint.setColor(BORDER_COLOR);
@@ -246,17 +271,22 @@ public class CharacterView extends View {
         canvas.drawColor(BACKGROUND_ACTIVE);
         canvas.drawRect(borderWidth / 2, borderWidth / 2, getWidth() - borderWidth / 2, getHeight() - borderWidth / 2, borderPaint);
 
-        if (animating) {
+        if (mode == Mode.DEMO_ANIMATED) {
             canvas.drawText(demo.glyph, getWidth() - demoGlyphfontSize, demoGlyphfontSize, demoGlyphTextPaint);
-            int cur = (int)animationTime;
+            int cur = (int) animationTime;
             float t = min((animationTime - cur) * 1.5f, 1);
-            for (int i=cur; i<strokes.size(); i++)
+            for (int i = cur; i < strokes.size(); i++)
                 drawStroke(canvas, strokes.get(i), strokePaintBack);
-            for (int i=0; i<min(cur, strokes.size()); i++)
+            for (int i = 0; i < min(cur, strokes.size()); i++)
                 drawStroke(canvas, strokes.get(i), strokePaint);
             if (cur < strokes.size())
                 drawStrokePartial(canvas, strokes.get(cur), t, curStrokePaint);
 
+            for (Stroke s : strokes)
+                canvas.drawText(String.valueOf(strokes.indexOf(s) + 1), s.points.get(0).x * getWidth() - fontSize, s.points.get(0).y * getHeight() - fontSize, numberTextPaint);
+        }else if (mode == Mode.DEMO) {
+            demoGlyphTextPaintLarge.setTextSize(getHeight() * 0.8f);
+            canvas.drawText(demo.glyph, getWidth()*0.1f, getHeight() * 0.8f, demoGlyphTextPaintLarge);
         } else {
             for (Stroke s : strokes) {
                 drawStroke(canvas, s, autoClear ? strokePaintBack : strokePaint);
@@ -309,7 +339,7 @@ public class CharacterView extends View {
     public void clear() {
         stopAnimation();
         demo = null;
-        editable = true;
+        mode = Mode.DRAW;
         autoClear = false;
         strokes.clear();
         this.invalidate();
